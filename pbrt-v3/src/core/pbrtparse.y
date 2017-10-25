@@ -176,6 +176,7 @@ pbrt::ParamArray *ribarray;
 %token REVERSEORIENTATION ROTATE SAMPLER SCALE SHAPE STARTTIME
 %token INTEGRATOR TEXTURE TRANSFORMBEGIN TRANSFORMEND TRANSFORMTIMES
 %token TRANSFORM TRANSLATE WORLDBEGIN WORLDEND
+%token SCENEPHOTO SYNTHSCENEBEGIN SYNTHSCENEEND
 
 %token HIGH_PRECEDENCE
 
@@ -641,6 +642,24 @@ pbrt_stmt: ACCELERATOR STRING paramlist
 | WORLDEND
 {
     pbrt::pbrtWorldEnd();
+};
+
+| SCENEPHOTO paramlist
+{
+    pbrt::ParamSet params;
+    pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
+    pbrt::cgraScenePhoto(params);
+    pbrt::FreeArgs();
+};
+
+| SYNTHSCENEBEGIN
+{
+    pbrt::cgraSynthSceneBegin();
+};
+
+| SYNTHSCENEEND
+{
+    pbrt::cgraSynthSceneEnd();
 };
 
 

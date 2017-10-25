@@ -167,6 +167,9 @@ Transform               { return TRANSFORM; }
 Translate               { return TRANSLATE; }
 WorldBegin              { return WORLDBEGIN; }
 WorldEnd                { return WORLDEND; }
+ScenePhoto              { return SCENEPHOTO; }
+SynthSceneBegin         { return SYNTHSCENEBEGIN; }
+SynthSceneEnd           { return SYNTHSCENEEND; }
 {WHITESPACE} /* do nothing */
 \n { pbrt::line_num++; }
 {NUMBER} {
