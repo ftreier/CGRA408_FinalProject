@@ -1,7 +1,7 @@
 Film "image" 
-        "integer yresolution" [ 800 ] 
-        "integer xresolution" [ 1200 ] 
-        "string filename" [ "test.exr" ] 
+        "integer yresolution" [ 200 ] 
+        "integer xresolution" [ 300 ] 
+        "string filename" [ "testDebug.exr" ] 
 PixelFilter "box"
 LookAt 0 6 10  -2 0 0  0 1 0
 #LookAt 0 0 0  -2 0 0  0 1 0
@@ -9,7 +9,7 @@ LookAt 0 6 10  -2 0 0  0 1 0
 Camera "perspective" 
         "float fov" [ 60 ] 
 
-Sampler "halton" "integer pixelsamples" [8]
+Sampler "halton" "integer pixelsamples" [1]
 
 WorldBegin
 
@@ -17,12 +17,12 @@ WorldBegin
 	AttributeBegin
 		Rotate -90 1 0 0
 		LightSource "infinite" 
-				"string mapname" [ "doge2_latlong.exr" ] 
+				"string mapname" [ "doge2_latlongDebug.png" ] 
 				"rgb L" [ 1 1 1 ] 
 	AttributeEnd
 	
 	# scene photo
-	ScenePhoto "string filename" "test.png"
+	ScenePhoto "string filename" "testDebug.png"
 
 	# local scene
 	AttributeBegin
