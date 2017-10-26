@@ -1,0 +1,51 @@
+Film "image" 
+        "integer yresolution" [ 800 ] 
+        "integer xresolution" [ 1200 ] 
+        "string filename" [ "test.exr" ] 
+PixelFilter "box"
+LookAt 0 6 10  -2 0 0  0 1 0
+#LookAt 0 0 0  -2 0 0  0 1 0
+
+Camera "perspective" 
+        "float fov" [ 60 ] 
+
+Sampler "halton" "integer pixelsamples" [8]
+
+WorldBegin
+
+	# distand scene
+	AttributeBegin
+		Rotate -90 1 0 0
+		LightSource "infinite" 
+				"string mapname" [ "doge2_latlong.exr" ] 
+				"rgb L" [ 1 1 1 ] 
+	AttributeEnd
+	
+	# scene photo
+	ScenePhoto "string filename" "test.png"
+
+	# local scene
+	AttributeBegin
+		Texture "tmap" "color"
+			"imagemap" "string filename" "renderBackground.png"
+
+		Material "substrate"
+			"texture Kd" "tmap"
+
+		Shape "trianglemesh"
+			"integer indices" [0 1 2 0 3 2 ]
+		    "point P" [ -10 0 -10  10 0 -10   10 0 10   -10 0 10 ]
+	AttributeEnd
+
+	# synthetic objects
+	SynthSceneBegin
+		AttributeBegin
+			Material "kdsubsurface" "color Kd" [.8 .2 .5]
+
+			Translate -2 2 2
+			Scale 0.75 0.75 0.75
+			Shape "sphere" "float radius" [2]
+			#Include "teapot.pbrt"
+		AttributeEnd
+	SynthSceneEnd
+WorldEnd

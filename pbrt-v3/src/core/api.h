@@ -88,6 +88,10 @@ void pbrtObjectEnd();
 void pbrtObjectInstance(const std::string &name);
 void pbrtWorldEnd();
 
+void cgraScenePhoto(const ParamSet params);
+void cgraSynthSceneBegin();
+void cgraSynthSceneEnd();
+
 }  // namespace pbrt
 
 #endif  // PBRT_CORE_API_H
