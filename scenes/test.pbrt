@@ -34,13 +34,13 @@ WorldBegin
 
 		Shape "trianglemesh"
 			"integer indices" [0 1 2 0 3 2 ]
-		    "point P" [ -5 0 -5  5 0 -5   5 0 5   -5 0 5 ]
+		    "point P" [ -10 0 -10  10 0 -10   10 0 10   -10 0 10 ]
 	AttributeEnd
 
 	# synthetic objects
 	SynthSceneBegin
 		AttributeBegin
-			Material "kdsubsurface" "color Kd" [ .6 .6 .7]
+			Material "kdsubsurface" "color Kd" [.8 .2 .5]
 
 			Translate -2 2 2
 			Scale 0.75 0.75 0.75

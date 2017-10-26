@@ -1396,6 +1396,25 @@ void pbrtObjectInstance(const string &name)
 	renderOptions->primitives.push_back(prim);
 }
 
+void renderScene(float* buffer, bool inclLocal, bool inclSynth)
+{
+	renderOptions->_destBuffer = buffer;
+	unique_ptr<Integrator> integrator(renderOptions->MakeIntegrator());
+	unique_ptr<Scene> scene(renderOptions->MakeScene(inclLocal, inclSynth));
+	CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::SceneConstruction));
+	ProfilerState = ProfToBits(Prof::IntegratorRender);
+	if (scene && integrator)
+	{
+		integrator->Render(*scene);
+	}
+
+	integrator.reset();
+	scene.reset();
+
+	CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::IntegratorRender));
+	ProfilerState = ProfToBits(Prof::SceneConstruction);
+}
+
 void differentialRendering()
 {
 	string bgFile = renderOptions->_differentialBg.FindOneFilename("filename", "");
@@ -1416,23 +1435,76 @@ void differentialRendering()
 		return;
 	}
 
+	int noOfPixels = xRes * yRes;
+	int bufferSize = noOfPixels * _noOfChannels;
+
 	// render the complete scene (local + synthetic)
 	cout << "Rendering complete scene" << endl;
-	float *complete = new float[xRes * yRes * _noOfChannels];
-	renderOptions->_destBuffer = complete;
-	unique_ptr<Integrator> completeIntegrator(renderOptions->MakeIntegrator());
-	unique_ptr<Scene> completeScene(renderOptions->MakeScene(true, true));
-	CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::SceneConstruction));
-	ProfilerState = ProfToBits(Prof::IntegratorRender);
-	if (completeScene && completeIntegrator)
-	{
-		completeIntegrator->Render(*completeScene);
-	}
-
-	CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::IntegratorRender));
-	ProfilerState = ProfToBits(Prof::SceneConstruction);
+	float *complete = new float[bufferSize];
+	renderScene(complete, true, true);
 	auto bounds = Bounds2i({ 0, 0 }, size);
 	WriteImage("complete.exr", complete, bounds, size);
+
+	// render the local scene
+	cout << "Rendering local scene" << endl;
+	float *local = new float[bufferSize];
+	renderScene(local, true, false);
+	WriteImage("local.exr", local, bounds, size);
+
+	// render the synthetic scene
+	cout << "Rendering synthetic scene" << endl;
+	float *synthetic = new float[bufferSize];
+	renderScene(synthetic, false, true);
+	WriteImage("synthetic.exr", synthetic, bounds, size);
+
+	// render environment only
+	cout << "Rendering environment" << endl;
+	float *environment = new float[bufferSize];
+	renderScene(environment, false, false);
+	WriteImage("environment.exr", environment, bounds, size);
+
+	float *printMask = new float[bufferSize];
+	float *diffImg = new float[bufferSize];
+	float *fin = new float[bufferSize];
+	for(int i = 0; i < noOfPixels; i++)
+	{
+		// calculate mask
+		float diff = abs(synthetic[_noOfChannels * i + 0] - environment[_noOfChannels * i + 0]) +
+					 abs(synthetic[_noOfChannels * i + 1] - environment[_noOfChannels * i + 1]) +
+					 abs(synthetic[_noOfChannels * i + 2] - environment[_noOfChannels * i + 2]);
+
+		diff = diff > 0 ? 1 : 0;
+		float notDiff = 1 - diff;
+		printMask[_noOfChannels * i + 0] = printMask[_noOfChannels * i + 1] = printMask[_noOfChannels * i + 2] = diff;
+
+		float changeR = (complete[_noOfChannels * i + 0] - local[_noOfChannels * i + 0]) * notDiff;
+		float changeG = (complete[_noOfChannels * i + 1] - local[_noOfChannels * i + 1]) * notDiff;
+		float changeB = (complete[_noOfChannels * i + 2] - local[_noOfChannels * i + 2]) * notDiff;
+		diffImg[_noOfChannels * i + 0] = changeR + 0.5;
+		diffImg[_noOfChannels * i + 1] = changeG + 0.5;
+		diffImg[_noOfChannels * i + 2] = changeB + 0.5;
+
+		// Calculate final image
+		float orig[3];
+		bg[i].ToRGB(orig);
+		fin[_noOfChannels * i + 0] = orig[0] * notDiff + complete[_noOfChannels * i + 0] * diff + changeR;
+		fin[_noOfChannels * i + 1] = orig[1] * notDiff + complete[_noOfChannels * i + 1] * diff + changeG;
+		fin[_noOfChannels * i + 2] = orig[2] * notDiff + complete[_noOfChannels * i + 2] * diff + changeB;
+	}
+
+	WriteImage("mask.exr", printMask, bounds, size);
+	WriteImage("diff.exr", diffImg, bounds, size);
+	WriteImage("final.exr", fin, bounds, size);
+
+	// cleaning up
+	delete[] complete;
+	delete[] local;
+	delete[] synthetic;
+	delete[] environment;
+	//delete[] mask;
+	delete[] printMask;
+	delete[] diffImg;
+	delete[] fin;
 }
 
 void pbrtWorldEnd()
