@@ -254,10 +254,10 @@ static const int _noOfChannels = 3;
 
 // API Forward Declarations
 vector<shared_ptr<Shape>> MakeShapes(const string &name,
-											   const Transform *ObjectToWorld,
-											   const Transform *WorldToObject,
-											   bool reverseOrientation,
-											   const ParamSet &paramSet);
+									 const Transform *ObjectToWorld,
+									 const Transform *WorldToObject,
+									 bool reverseOrientation,
+									 const ParamSet &paramSet);
 
 // API Macros
 #define VERIFY_INITIALIZED(func)                           \
@@ -417,8 +417,7 @@ vector<shared_ptr<Shape>> MakeShapes(const string &name,
 
 STAT_COUNTER("Scene/Materials created", nMaterialsCreated);
 
-shared_ptr<Material> MakeMaterial(const string &name,
-									   const TextureParams &mp) {
+shared_ptr<Material> MakeMaterial(const string &name, const TextureParams &mp) {
 	Material *material = nullptr;
 	if (name == "" || name == "none")
 		return nullptr;
@@ -486,8 +485,8 @@ shared_ptr<Material> MakeMaterial(const string &name,
 }
 
 shared_ptr<Texture<Float>> MakeFloatTexture(const string &name,
-												 const Transform &tex2world,
-												 const TextureParams &tp) {
+											const Transform &tex2world,
+											const TextureParams &tp) {
 	Texture<Float> *tex = nullptr;
 	if (name == "constant")
 		tex = CreateConstantFloatTexture(tex2world, tp);
@@ -558,8 +557,8 @@ shared_ptr<Texture<Spectrum>> MakeSpectrumTexture(
 }
 
 shared_ptr<Medium> MakeMedium(const string &name,
-								   const ParamSet &paramSet,
-								   const Transform &medium2world) {
+							  const ParamSet &paramSet,
+							  const Transform &medium2world) {
 	Float sig_a_rgb[3] = {.0011f, .0024f, .014f},
 		  sig_s_rgb[3] = {2.55f, 3.21f, 3.77f};
 	Spectrum sig_a = Spectrum::FromRGB(sig_a_rgb),
@@ -606,9 +605,9 @@ shared_ptr<Medium> MakeMedium(const string &name,
 }
 
 shared_ptr<Light> MakeLight(const string &name,
-								 const ParamSet &paramSet,
-								 const Transform &light2world,
-								 const MediumInterface &mediumInterface) {
+							const ParamSet &paramSet,
+							const Transform &light2world,
+							const MediumInterface &mediumInterface) {
 	shared_ptr<Light> light;
 	if (name == "point")
 		light =
@@ -632,10 +631,10 @@ shared_ptr<Light> MakeLight(const string &name,
 }
 
 shared_ptr<AreaLight> MakeAreaLight(const string &name,
-										 const Transform &light2world,
-										 const MediumInterface &mediumInterface,
-										 const ParamSet &paramSet,
-										 const shared_ptr<Shape> &shape) {
+									const Transform &light2world,
+									const MediumInterface &mediumInterface,
+									const ParamSet &paramSet,
+									const shared_ptr<Shape> &shape) {
 	shared_ptr<AreaLight> area;
 	if (name == "area" || name == "diffuse")
 		area = CreateDiffuseAreaLight(light2world, mediumInterface.outside,
@@ -692,8 +691,8 @@ Camera *MakeCamera(const string &name, const ParamSet &paramSet,
 }
 
 shared_ptr<Sampler> MakeSampler(const string &name,
-									 const ParamSet &paramSet,
-									 const Film *film) {
+								const ParamSet &paramSet,
+								const Film *film) {
 	Sampler *sampler = nullptr;
 	if (name == "lowdiscrepancy" || name == "02sequence")
 		sampler = CreateZeroTwoSequenceSampler(paramSet);
@@ -713,8 +712,7 @@ shared_ptr<Sampler> MakeSampler(const string &name,
 	return shared_ptr<Sampler>(sampler);
 }
 
-unique_ptr<Filter> MakeFilter(const string &name,
-								   const ParamSet &paramSet) {
+unique_ptr<Filter> MakeFilter(const string &name, const ParamSet &paramSet) {
 	Filter *filter = nullptr;
 	if (name == "box")
 		filter = CreateBoxFilter(paramSet);
@@ -988,8 +986,7 @@ void pbrtMakeNamedMedium(const string &name, const ParamSet &params) {
 	}
 }
 
-void pbrtMediumInterface(const string &insideName,
-						 const string &outsideName) {
+void pbrtMediumInterface(const string &insideName, const string &outsideName) {
 	VERIFY_INITIALIZED("MediumInterface");
 	graphicsState.currentInsideMedium = insideName;
 	graphicsState.currentOutsideMedium = outsideName;
@@ -1286,8 +1283,7 @@ void pbrtShape(const string &name, const ParamSet &params)
 	}
 }
 
-shared_ptr<Material> GraphicsState::CreateMaterial(
-	const ParamSet &params) {
+shared_ptr<Material> GraphicsState::CreateMaterial(const ParamSet &params) {
 	TextureParams mp(params, materialParams, floatTextures, spectrumTextures);
 	shared_ptr<Material> mtl;
 	if (currentNamedMaterial != "") {
