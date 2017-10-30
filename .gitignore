@@ -2,3 +2,5 @@
 /build
 /test.bat
 /*.exr
+/scenes/env_map_large.exr
+/*.png
