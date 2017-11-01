@@ -4,3 +4,7 @@
 /*.exr
 /scenes/env_map_large.exr
 /*.png
+
+*.idea
+MayaProject/workspace.mel
+MayaProject/images/tmp
