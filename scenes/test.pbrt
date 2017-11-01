@@ -28,12 +28,8 @@ WorldBegin
 
 	# local scene
 	AttributeBegin
-		Texture "tmap" "color"
-			"imagemap" "string filename" "renderBackground.png"
-
 		Material "substrate"
 			"rgb Kd" [1 0.5 0.7]
-			#"texture Kd" "tmap"
 
 		Shape "trianglemesh"
 			"integer indices" [0 1 2 0 3 2 ]
@@ -43,8 +39,8 @@ WorldBegin
 	# synthetic objects
 	SynthSceneBegin
 		AttributeBegin
-			#Material "kdsubsurface" "color Kd" [.8 .2 .5]
-			Material "mirror" "color Kd" [1. 1. 1.]
+			Material "kdsubsurface" "color Kd" [.8 .2 .5]
+			#Material "mirror" "color Kd" [1. 1. 1.]
 
 			Translate -2 2 2
 			Scale 0.75 0.75 0.75

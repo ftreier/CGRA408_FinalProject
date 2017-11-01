@@ -1425,8 +1425,7 @@ void differentialRendering()
 	}
 
 	Point2i size;
-	auto bg = ReadImage(bgFile, &size);
-
+	std::unique_ptr<RGBSpectrum[]> bg = ReadImage(bgFile, &size);
 	int xRes = renderOptions->FilmParams.FindOneInt("xresolution", 0);
 	int yRes = renderOptions->FilmParams.FindOneInt("yresolution", 0);
 	if (size.x != xRes || size.y != yRes)
@@ -1438,12 +1437,26 @@ void differentialRendering()
 	int noOfPixels = xRes * yRes;
 	int bufferSize = noOfPixels * _noOfChannels;
 
+
+
 	// render the complete scene (local + synthetic)
 	cout << "Rendering complete scene" << endl;
 	float *complete = new float[bufferSize];
 	renderScene(complete, true, true);
 	auto bounds = Bounds2i({ 0, 0 }, size);
 	WriteImage("complete.exr", complete, bounds, size);
+
+	float *original = new float[bufferSize];
+	for (int i = 0; i < noOfPixels; i++)
+	{
+		float *rgb = new float[3];
+		bg[i].ToRGB(rgb);
+		//bg[i].ToRGB(rgb);
+		original[i * 3 + 0] = rgb[0];
+		original[i * 3 + 1] = rgb[1];
+		original[i * 3 + 2] = rgb[2];
+	}
+	WriteImage("test.exr", original, bounds, size);
 
 	// render the local scene
 	cout << "Rendering local scene" << endl;
