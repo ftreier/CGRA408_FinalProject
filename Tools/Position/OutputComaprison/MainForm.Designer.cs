@@ -30,40 +30,144 @@ namespace OutputComaprison
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this._dockContainer = new Crom.Controls.DockContainer();
+			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this._pbrtPathLbl = new System.Windows.Forms.ToolStripLabel();
+			this._pbrtPathBtn = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this._baseImgPathLbl = new System.Windows.Forms.ToolStripLabel();
+			this._pbrtPathTb = new System.Windows.Forms.ToolStripTextBox();
+			this._baseImgPathTb = new System.Windows.Forms.ToolStripTextBox();
+			this._baseImgPathBtn = new System.Windows.Forms.ToolStripButton();
+			this.tableLayoutPanel1.SuspendLayout();
+			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// _dockContainer
 			// 
 			this._dockContainer.AutoSize = true;
 			this._dockContainer.BackColor = System.Drawing.SystemColors.Window;
-			this._dockContainer.BottomPanelHeight = 150;
+			this._dockContainer.BottomPanelHeight = 299;
 			this._dockContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._dockContainer.LeftPanelWidth = 150;
-			this._dockContainer.Location = new System.Drawing.Point(0, 0);
-			this._dockContainer.MinimumSize = new System.Drawing.Size(504, 528);
+			this._dockContainer.LeftPanelWidth = 400;
+			this._dockContainer.Location = new System.Drawing.Point(3, 42);
+			this._dockContainer.MinimumSize = new System.Drawing.Size(1004, 800);
 			this._dockContainer.Name = "_dockContainer";
-			this._dockContainer.RightPanelWidth = 150;
-			this._dockContainer.Size = new System.Drawing.Size(1200, 800);
+			this._dockContainer.RightPanelWidth = 400;
+			this._dockContainer.Size = new System.Drawing.Size(1194, 800);
 			this._dockContainer.TabIndex = 0;
-			this._dockContainer.TopPanelHeight = 150;
+			this._dockContainer.TopPanelHeight = 400;
 			// 
-			// Form1
+			// tableLayoutPanel1
+			// 
+			this.tableLayoutPanel1.ColumnCount = 1;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Controls.Add(this._dockContainer, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.toolStrip1, 0, 0);
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+			this.tableLayoutPanel1.RowCount = 2;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(1200, 800);
+			this.tableLayoutPanel1.TabIndex = 1;
+			// 
+			// toolStrip1
+			// 
+			this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
+			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._pbrtPathLbl,
+            this._pbrtPathTb,
+            this._pbrtPathBtn,
+            this.toolStripSeparator1,
+            this._baseImgPathLbl,
+            this._baseImgPathTb,
+            this._baseImgPathBtn});
+			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.Size = new System.Drawing.Size(1200, 39);
+			this.toolStrip1.TabIndex = 1;
+			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// _pbrtPathLbl
+			// 
+			this._pbrtPathLbl.Name = "_pbrtPathLbl";
+			this._pbrtPathLbl.Size = new System.Drawing.Size(121, 36);
+			this._pbrtPathLbl.Text = "PBRT Path";
+			// 
+			// _pbrtPathBtn
+			// 
+			this._pbrtPathBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this._pbrtPathBtn.Image = ((System.Drawing.Image)(resources.GetObject("_pbrtPathBtn.Image")));
+			this._pbrtPathBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this._pbrtPathBtn.Name = "_pbrtPathBtn";
+			this._pbrtPathBtn.Size = new System.Drawing.Size(34, 36);
+			this._pbrtPathBtn.Text = "...";
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
+			// 
+			// _baseImgPathLbl
+			// 
+			this._baseImgPathLbl.Name = "_baseImgPathLbl";
+			this._baseImgPathLbl.Size = new System.Drawing.Size(190, 36);
+			this._baseImgPathLbl.Text = "Base Image Path";
+			// 
+			// _pbrtPathTb
+			// 
+			this._pbrtPathTb.Name = "_pbrtPathTb";
+			this._pbrtPathTb.Size = new System.Drawing.Size(300, 39);
+			// 
+			// _baseImgPathTb
+			// 
+			this._baseImgPathTb.Name = "_baseImgPathTb";
+			this._baseImgPathTb.Size = new System.Drawing.Size(300, 39);
+			this._baseImgPathTb.TextChanged += new System.EventHandler(this._baseImgPathTb_TextChanged);
+			// 
+			// _baseImgPathBtn
+			// 
+			this._baseImgPathBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this._baseImgPathBtn.Image = ((System.Drawing.Image)(resources.GetObject("_baseImgPathBtn.Image")));
+			this._baseImgPathBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this._baseImgPathBtn.Name = "_baseImgPathBtn";
+			this._baseImgPathBtn.Size = new System.Drawing.Size(34, 36);
+			this._baseImgPathBtn.Text = "...";
+			// 
+			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1200, 800);
-			this.Controls.Add(this._dockContainer);
-			this.Name = "Form1";
+			this.Controls.Add(this.tableLayoutPanel1);
+			this.Name = "MainForm";
 			this.Text = "Form1";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tableLayoutPanel1.PerformLayout();
+			this.toolStrip1.ResumeLayout(false);
+			this.toolStrip1.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
 
 		private DockContainer _dockContainer;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.ToolStrip toolStrip1;
+		private System.Windows.Forms.ToolStripLabel _pbrtPathLbl;
+		private System.Windows.Forms.ToolStripTextBox _pbrtPathTb;
+		private System.Windows.Forms.ToolStripButton _pbrtPathBtn;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripLabel _baseImgPathLbl;
+		private System.Windows.Forms.ToolStripTextBox _baseImgPathTb;
+		private System.Windows.Forms.ToolStripButton _baseImgPathBtn;
 	}
 }
 

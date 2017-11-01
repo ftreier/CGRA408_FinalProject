@@ -22,5 +22,29 @@ namespace OutputComaprison.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PBRTPath {
+            get {
+                return ((string)(this["PBRTPath"]));
+            }
+            set {
+                this["PBRTPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ImageBasePath {
+            get {
+                return ((string)(this["ImageBasePath"]));
+            }
+            set {
+                this["ImageBasePath"] = value;
+            }
+        }
     }
 }

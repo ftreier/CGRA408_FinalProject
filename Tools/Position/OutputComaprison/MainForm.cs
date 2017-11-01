@@ -1,103 +1,138 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using Crom.Controls;
+using OutputComaprison.Properties;
 
 namespace OutputComaprison
 {
 	public partial class MainForm : Form
 	{
+		private readonly List<ImageBox> _imageBoxes;
+		private readonly HashSet<DockableToolWindow> _updatingSize;
+		private readonly Dictionary<string, zDockMode> _imageNames;
+
+		private string _pbrtPath;
+		private string _baseImgPath;
+
 		public MainForm()
 		{
 			InitializeComponent();
 
+			_imageBoxes = new List<ImageBox>();
+			_updatingSize = new HashSet<DockableToolWindow>();
+			_imageNames = new Dictionary<string, zDockMode>
+			{
+				{"complete", zDockMode.Left},
+				{"diff", zDockMode.Bottom},
+				{"mask", zDockMode.Bottom},
+				{"synthetic", zDockMode.Right},
+				{"local", zDockMode.Right},
+				{"environment", zDockMode.Left},
+				{"final", zDockMode.Right}
+			};
+
+			_dockContainer.BottomPanelHeight = 400;
+		}
+
+		private void CreateImages(string fileName, zDockMode dockMode)
+		{
 			DockableToolWindow childForm = new DockableToolWindow();
-			ImageBox ib = new ImageBox();
-			ib.Dock = DockStyle.Fill;
+			ImageBox ib = new ImageBox(_baseImgPath, fileName) {Dock = DockStyle.Fill};
 			childForm.Controls.Add(ib);
+			childForm.Text = ib.FileName;
+			childForm.Width = 400;
+			childForm.Height = 300;
+
+			childForm.SizeChanged += ChildForm_SizeChanged;
 
 			// Add the form to the dock container
-			_dockContainer.AddToolWindow(childForm);
-			_dockContainer.AddToolWindow(childForm);
+			_dockContainer.DockToolWindow(childForm, dockMode);
 
 			// Show the form
 			childForm.Show();
+			_imageBoxes.Add(ib);
+			ib.ReloadImage();
+		}
 
-			string fileName = @"C:\Data\Victoria\CGRA408_Rendering\FinalProject\CGRA408_FinalProject\complete.exr";
-			//string fileName = @"C:\Data\Fotos\Ronja\Schwimmabzeichen.JPG";
-			//string outFileName = @"C:\Data\Victoria\CGRA408_Rendering\FinalProject\CGRA408_FinalProject\diff_.jpg";
+		private void ChildForm_SizeChanged(object sender, System.EventArgs e)
+		{
+			var childForm = sender as DockableToolWindow;
+			if (childForm != null && !_updatingSize.Contains(childForm))
+			{
+				_updatingSize.Add(childForm);
+				childForm.Width = 400;
+				childForm.Height = 300;
+				_updatingSize.Remove(childForm);
+			}
+		}
 
-			ib.SetImage(fileName);
+		private void ReloadImages()
+		{
+			foreach (var imageBox in _imageBoxes)
+			{
+				imageBox.ReloadImage();
+			}
+		}
 
-			//var file = EXRFile.FromFile(filename);
-			//var part = file.Parts[0];
+		private void MainForm_Load(object sender, System.EventArgs e)
+		{
+			WindowState = FormWindowState.Maximized;
 
-			//part.OpenParallel(filename);
+			_baseImgPath = Settings.Default.ImageBasePath;
+			_pbrtPath = Settings.Default.PBRTPath;
 
-			//var data = part.GetBytes(ImageDestFormat.PremultipliedRGBA16, GammaEncoding.sRGB);
+			foreach (var imageName in _imageNames)
+			{
+				CreateImages(imageName.Key, imageName.Value);
+			}
 
-			//FIBITMAP dib = new FIBITMAP();
+			UpdateBaseImgPath();
+		}
 
-			//if (!FreeImage.IsAvailable())
-			//{
-			//	Console.WriteLine("FreeImage.dll seems to be missing. Aborting.");
-			//	return;
-			//}
+		private void UpdateBaseImgPath()
+		{
+			_baseImgPathTb.Text = _baseImgPath;
+			try
+			{
+				if (File.Exists(Path.Combine(_baseImgPath, _imageNames.First().Key + ".exr")) ||
+				    File.Exists(Path.Combine(_baseImgPath, _imageNames.First().Key + ".png")))
+				{
+					_baseImgPathTb.ForeColor = Color.Black;
+					_baseImgPathLbl.ForeColor = Color.Black;
 
-			//if (!File.Exists(fileName))
-			//{
-			//	Console.WriteLine(fileName + " does not exist. Aborting.");
-			//	return;
-			//}
+					foreach (var imageBox in _imageBoxes)
+					{
+						imageBox.SetBasePath(_baseImgPath);
+					}
+				}
+				else
+				{
+					_baseImgPathTb.ForeColor = Color.Red;
+					_baseImgPathLbl.ForeColor = Color.Red;
+				}
+			}
+			catch (Exception)
+			{
+				_baseImgPath = "";
+				_baseImgPathTb.Text = "";
+			}
+		}
 
-			//// Try to unload the bitmap handle (in case it is not null).
-			//// Always assert that a handle (like dib) is unloaded before it is reused, because
-			//// on unmanaged side there is no garbage collector that will clean up unreferenced
-			//// objects.
-			//// The following code will produce a memory leak (in case the bitmap is loaded
-			//// successfully) because the handle to the first bitmap is lost:
-			////   dib = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_JPEG, fileName, FREE_IMAGE_LOAD_FLAGS.JPEG_ACCURATE);
-			////   dib = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_JPEG, fileName, FREE_IMAGE_LOAD_FLAGS.JPEG_ACCURATE);
-			//if (!dib.IsNull)
-			//	FreeImage.Unload(dib);
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			Settings.Default.ImageBasePath = _baseImgPath;
+			Settings.Default.PBRTPath = _pbrtPath;
+			Settings.Default.Save();
+		}
 
-			//// Loading a sample bitmap. In this case it's a .jpg file. 'Load' requires the file
-			//// format or the loading process will fail. An additional flag (the default value is
-			//// 'DEFAULT') can be set to enable special loading options.
-			//FREE_IMAGE_FORMAT fif = FREE_IMAGE_FORMAT.FIF_UNKNOWN;
-			//dib = FreeImage.LoadEx(fileName, ref fif);
-			////dib = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_EXR, fileName, FREE_IMAGE_LOAD_FLAGS.DEFAULT);
-			////dib = FreeImage.Load(FREE_IMAGE_FORMAT.FIF_JPEG, fileName, FREE_IMAGE_LOAD_FLAGS.JPEG_ACCURATE);
-
-			//// Check if the handle is null which means the bitmap could not be loaded.
-			//if (dib.IsNull)
-			//{
-			//	Console.WriteLine("Loading bitmap failed. Aborting.");
-			//	// Check whether there was an error message.
-			//	return;
-			//}
-
-			//// Try flipping the bitmap.
-			//if (!FreeImage.FlipHorizontal(dib))
-			//{
-			//	Console.WriteLine("Unable to flip bitmap.");
-			//	// Check whether there was an error message.
-			//}
-
-			//// Store the bitmap back to disk. Again the desired format is needed. In this case the format is 'TIFF'.
-			//// An output filename has to be chosen (which will be overwritten without a warning).
-			//// A flag can be provided to enable pluginfunctions (compression is this case).
-			////FreeImage.Save(FREE_IMAGE_FORMAT.FIF_EXR, dib, outFileName, FREE_IMAGE_SAVE_FLAGS.EXR_NONE);
-			//FIBITMAP c = FreeImage.TmoReinhard05(dib, 0, 0);
-			////FIBITMAP c = FreeImage.ConvertToStandardType(FreeImage.ConvertToType(dib, FREE_IMAGE_TYPE.FIT_FLOAT, true), true);
-			////FIBITMAP c = FreeImage.ConvertToType(dib, FREE_IMAGE_TYPE.FIT_RGBF, true);
-			//FreeImage.Save(FREE_IMAGE_FORMAT.FIF_JPEG, c, outFileName, FREE_IMAGE_SAVE_FLAGS.JPEG_QUALITYNORMAL);
-			////FreeImage.Save(FREE_IMAGE_FORMAT.FIF_JPEG, dib, outFileName, FREE_IMAGE_SAVE_FLAGS.JPEG_QUALITYNORMAL);
-
-			//// The bitmap was saved to disk but is still allocated in memory, so the handle has to be freed.
-			//if (!dib.IsNull)
-			//	FreeImage.Unload(dib);
-
-			//// Make sure to set the handle to null so that it is clear that the handle is not pointing to a bitmap.
-			//dib.SetNull();
+		private void _baseImgPathTb_TextChanged(object sender, System.EventArgs e)
+		{
+			_baseImgPath = _baseImgPathTb.Text;
+			UpdateBaseImgPath();
 		}
 	}
 }
