@@ -35,12 +35,14 @@ namespace OutputComaprison
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this._pbrtPathLbl = new System.Windows.Forms.ToolStripLabel();
+			this._pbrtPathTb = new System.Windows.Forms.ToolStripTextBox();
 			this._pbrtPathBtn = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this._baseImgPathLbl = new System.Windows.Forms.ToolStripLabel();
-			this._pbrtPathTb = new System.Windows.Forms.ToolStripTextBox();
 			this._baseImgPathTb = new System.Windows.Forms.ToolStripTextBox();
 			this._baseImgPathBtn = new System.Windows.Forms.ToolStripButton();
+			this._run = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -49,14 +51,14 @@ namespace OutputComaprison
 			// 
 			this._dockContainer.AutoSize = true;
 			this._dockContainer.BackColor = System.Drawing.SystemColors.Window;
-			this._dockContainer.BottomPanelHeight = 299;
+			this._dockContainer.BottomPanelHeight = 150;
 			this._dockContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._dockContainer.LeftPanelWidth = 400;
+			this._dockContainer.LeftPanelWidth = 246;
 			this._dockContainer.Location = new System.Drawing.Point(3, 42);
-			this._dockContainer.MinimumSize = new System.Drawing.Size(1004, 800);
+			this._dockContainer.MinimumSize = new System.Drawing.Size(850, 755);
 			this._dockContainer.Name = "_dockContainer";
 			this._dockContainer.RightPanelWidth = 400;
-			this._dockContainer.Size = new System.Drawing.Size(1194, 800);
+			this._dockContainer.Size = new System.Drawing.Size(1194, 755);
 			this._dockContainer.TabIndex = 0;
 			this._dockContainer.TopPanelHeight = 400;
 			// 
@@ -79,6 +81,8 @@ namespace OutputComaprison
 			// 
 			this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._run,
+            this.toolStripSeparator2,
             this._pbrtPathLbl,
             this._pbrtPathTb,
             this._pbrtPathBtn,
@@ -98,6 +102,12 @@ namespace OutputComaprison
 			this._pbrtPathLbl.Size = new System.Drawing.Size(121, 36);
 			this._pbrtPathLbl.Text = "PBRT Path";
 			// 
+			// _pbrtPathTb
+			// 
+			this._pbrtPathTb.Name = "_pbrtPathTb";
+			this._pbrtPathTb.Size = new System.Drawing.Size(300, 39);
+			this._pbrtPathTb.TextChanged += new System.EventHandler(this._pbrtPathTb_TextChanged);
+			// 
 			// _pbrtPathBtn
 			// 
 			this._pbrtPathBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -106,6 +116,7 @@ namespace OutputComaprison
 			this._pbrtPathBtn.Name = "_pbrtPathBtn";
 			this._pbrtPathBtn.Size = new System.Drawing.Size(34, 36);
 			this._pbrtPathBtn.Text = "...";
+			this._pbrtPathBtn.Click += new System.EventHandler(this._pbrtPathBtn_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -117,11 +128,6 @@ namespace OutputComaprison
 			this._baseImgPathLbl.Name = "_baseImgPathLbl";
 			this._baseImgPathLbl.Size = new System.Drawing.Size(190, 36);
 			this._baseImgPathLbl.Text = "Base Image Path";
-			// 
-			// _pbrtPathTb
-			// 
-			this._pbrtPathTb.Name = "_pbrtPathTb";
-			this._pbrtPathTb.Size = new System.Drawing.Size(300, 39);
 			// 
 			// _baseImgPathTb
 			// 
@@ -137,6 +143,23 @@ namespace OutputComaprison
 			this._baseImgPathBtn.Name = "_baseImgPathBtn";
 			this._baseImgPathBtn.Size = new System.Drawing.Size(34, 36);
 			this._baseImgPathBtn.Text = "...";
+			this._baseImgPathBtn.Click += new System.EventHandler(this._baseImgPathBtn_Click);
+			// 
+			// _run
+			// 
+			this._run.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this._run.Enabled = false;
+			this._run.Image = ((System.Drawing.Image)(resources.GetObject("_run.Image")));
+			this._run.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this._run.Name = "_run";
+			this._run.Size = new System.Drawing.Size(36, 36);
+			this._run.Text = "Run";
+			this._run.Click += new System.EventHandler(this._run_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
 			// 
 			// MainForm
 			// 
@@ -168,6 +191,8 @@ namespace OutputComaprison
 		private System.Windows.Forms.ToolStripLabel _baseImgPathLbl;
 		private System.Windows.Forms.ToolStripTextBox _baseImgPathTb;
 		private System.Windows.Forms.ToolStripButton _baseImgPathBtn;
+		private System.Windows.Forms.ToolStripButton _run;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 	}
 }
 

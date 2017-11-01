@@ -46,5 +46,17 @@ namespace OutputComaprison.Properties {
                 this["ImageBasePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PbrtSceneFile {
+            get {
+                return ((string)(this["PbrtSceneFile"]));
+            }
+            set {
+                this["PbrtSceneFile"] = value;
+            }
+        }
     }
 }
