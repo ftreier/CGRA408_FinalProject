@@ -10,3 +10,10 @@
 /pbrt-v3/cmake-build-release
 MayaProject/workspace.mel
 MayaProject/images/tmp
+
+/old
+/Tools/Position/.vs
+/Tools/Position/Library
+/Tools/Position/OutputComaprison/bin
+/Tools/Position/OutputComaprison/obj
+/*.jpg

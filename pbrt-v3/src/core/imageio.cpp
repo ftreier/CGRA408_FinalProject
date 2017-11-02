@@ -95,6 +95,7 @@ void WriteImage(const std::string &name, const Float *rgb,
         uint8_t *dst = rgb8.get();
         for (int y = 0; y < resolution.y; ++y) {
             for (int x = 0; x < resolution.x; ++x) {
+//#define TO_BYTE(v) (uint8_t) Clamp(255.f * v, 0.f, 255.f)
 #define TO_BYTE(v) (uint8_t) Clamp(255.f * GammaCorrect(v) + 0.5f, 0.f, 255.f)
                 dst[0] = TO_BYTE(rgb[3 * (y * resolution.x + x) + 0]);
                 dst[1] = TO_BYTE(rgb[3 * (y * resolution.x + x) + 1]);
@@ -169,7 +170,12 @@ static void WriteImageEXR(const std::string &name, const Float *pixels,
 
     Rgba *hrgba = new Rgba[xRes * yRes];
     for (int i = 0; i < xRes * yRes; ++i)
-        hrgba[i] = Rgba(pixels[3 * i], pixels[3 * i + 1], pixels[3 * i + 2]);
+    {
+		//hrgba[i] = Rgba(InverseGammaCorrect(pixels[3 * i]), InverseGammaCorrect(pixels[3 * i + 1]), InverseGammaCorrect(pixels[3 * i + 2]));
+		hrgba[i] = Rgba(pixels[3 * i], pixels[3 * i + 1], pixels[3 * i + 2]);
+
+		//InverseGammaCorrect
+    }
 
     // OpenEXR uses inclusive pixel bounds.
     Box2i displayWindow(V2i(0, 0), V2i(totalXRes - 1, totalYRes - 1));
