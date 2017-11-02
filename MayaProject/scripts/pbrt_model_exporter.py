@@ -38,7 +38,9 @@ def export_selected():
     for v in range(0, num_vertices):
 
         # Round the vertex position
-        vertex_positions[v] = round(vertex_positions[v], 6)
+        vertex_positions[v*3] = round(vertex_positions[v*3], 6)
+        vertex_positions[v*3+1] = round(vertex_positions[v*3+1], 6)
+        vertex_positions[v*3+2] = round(vertex_positions[v*3+2], 6)
 
         # Get the vertex normal for this vertex
         cmds.select(selected_mesh + ".vtx[" + str(v) + "]")
