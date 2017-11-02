@@ -4,6 +4,13 @@
 /*.exr
 /scenes/env_map_large.exr
 /*.png
+
+*.idea
+/pbrt-v3/cmake-build-debug
+/pbrt-v3/cmake-build-release
+MayaProject/workspace.mel
+MayaProject/images/tmp
+
 /old
 /Tools/Position/.vs
 /Tools/Position/Library
