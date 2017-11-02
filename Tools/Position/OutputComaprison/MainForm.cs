@@ -92,6 +92,7 @@ namespace OutputComaprison
 
 		private void ReloadImages()
 		{
+			UpdateBaseImgPath();
 			foreach (var imageBox in _imageBoxes)
 			{
 				imageBox.ReloadImage();

@@ -33,8 +33,8 @@
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this._sfLbl = new System.Windows.Forms.ToolStripLabel();
 			this._sfTb = new System.Windows.Forms.ToolStripTextBox();
-			this._sceneEditor = new System.Windows.Forms.TextBox();
 			this._sfBtn = new System.Windows.Forms.ToolStripButton();
+			this._sceneEditor = new System.Windows.Forms.TextBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -80,16 +80,6 @@
 			this._sfTb.Size = new System.Drawing.Size(300, 39);
 			this._sfTb.TextChanged += new System.EventHandler(this._sfTb_TextChanged);
 			// 
-			// _sceneEditor
-			// 
-			this._sceneEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._sceneEditor.Location = new System.Drawing.Point(3, 42);
-			this._sceneEditor.Multiline = true;
-			this._sceneEditor.Name = "_sceneEditor";
-			this._sceneEditor.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this._sceneEditor.Size = new System.Drawing.Size(594, 355);
-			this._sceneEditor.TabIndex = 1;
-			// 
 			// _sfBtn
 			// 
 			this._sfBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -99,6 +89,17 @@
 			this._sfBtn.Size = new System.Drawing.Size(34, 36);
 			this._sfBtn.Text = "...";
 			this._sfBtn.Click += new System.EventHandler(this._sfBtn_Click);
+			// 
+			// _sceneEditor
+			// 
+			this._sceneEditor.AcceptsTab = true;
+			this._sceneEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._sceneEditor.Location = new System.Drawing.Point(3, 42);
+			this._sceneEditor.Multiline = true;
+			this._sceneEditor.Name = "_sceneEditor";
+			this._sceneEditor.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this._sceneEditor.Size = new System.Drawing.Size(594, 355);
+			this._sceneEditor.TabIndex = 1;
 			// 
 			// PbrtSceneEditor
 			// 
