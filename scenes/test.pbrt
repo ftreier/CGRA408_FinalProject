@@ -3,7 +3,7 @@ Film "image"
         "integer yresolution" [ 800 ]
         "string filename" [ "test.exr" ]
 PixelFilter "box"
-LookAt 0 0 0 9.2 -13.6 -14  0 1 0
+LookAt 0 0 0 6.5 -10. -14  0 1 0
 
 Camera "perspective"
         "float fov" [ 60 ]
@@ -12,7 +12,7 @@ Sampler "halton" "integer pixelsamples" [4]
 
 WorldBegin
 
-	Translate 9.2 -13.6 -14
+	Translate 6.5 -10. -14
 
 	# distand scene
 	AttributeBegin
@@ -27,14 +27,12 @@ WorldBegin
 
 	# local scene
 	AttributeBegin
-		#Translate 9.2 -13.6 -14
-
 		Material "substrate"
 			"rgb Kd" [1 0.5 0.7]
 
 		Shape "trianglemesh"
 			"integer indices" [0 1 2 0 3 2 ]
-		    "point P" [ -10 0 -10  10 0 -10   10 0 10   -10 0 10 ]
+			"point P" [ -10 0 -10  10 0 -10   10 0 10   -10 0 10 ]
 	AttributeEnd
 
 	# synthetic objects
@@ -45,14 +43,23 @@ WorldBegin
 
 			#Scale 0.75 0.75 0.75
 
-			Translate 9.65 0.15 5.35
-			Rotate -5 1 0 0
-			Rotate 10 0 0 1
+			Translate 8.6 0 3.7
+			#Translate -5 0 3.6
+			#Rotate -5 1 0 0
+			#Rotate 10 0 0 1
 			Scale 1.5 1.5 1.5
 
 			#Shape "sphere" "float radius" [4]
 			Include "cone.pbrt"
+
+			Translate 0 1 0
 			Include "ball.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+
+			Material "mirror" "color Kr" [1. 1. 1.]
+			#Include "plane.pbrt"
 		AttributeEnd
 	SynthSceneEnd
 WorldEnd

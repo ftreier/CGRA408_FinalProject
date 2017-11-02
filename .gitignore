@@ -10,6 +10,7 @@
 /pbrt-v3/cmake-build-release
 MayaProject/workspace.mel
 MayaProject/images/tmp
+*.mayaSwatches
 
 /old
 /Tools/Position/.vs
