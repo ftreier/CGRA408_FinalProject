@@ -1,65 +1,72 @@
 Film "image"
-        "integer xresolution" [ 1200 ]
-        "integer yresolution" [ 800 ]
-        "string filename" [ "test.PNg" ]
+  "integer xresolution" [ 1200 ]
+  "integer yresolution" [ 800 ]
+  "string filename" [ "test.png" ]
 PixelFilter "box"
-LookAt 0 0 0 6.5 -10. -14  0 1 0
+LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 
 Camera "perspective"
-        "float fov" [ 60 ]
+	"float fov" [ 52 ]
 
-Sampler "halton" "integer pixelsamples" [4]
+Sampler "halton" "integer pixelsamples" [ 32 ]
 
 WorldBegin
 
-	Translate 6.5 -10. -14
-
-	# distand scene
+	# distance scene
 	AttributeBegin
+
 		Rotate -90 1 0 0
+		Rotate 180 0 0 1
 		LightSource "infinite"
-				"string mapname" [ "env_map_small.exr" ]
-				"rgb L" [1 1 1]
+			"string mapname" [ "env_map_small.exr" ]
+			"rgb L" [ 0.9 0.9 0.9 ]
 	AttributeEnd
 
 	# scene photo
-	ScenePhoto "string filename" "test.png"
+	ScenePhoto "string filename" "test_.png"
 
 	# local scene
 	AttributeBegin
 		Material "substrate"
-			"rgb Kd" [1 0.5 0.7]
+			"rgb Kd" [ 1.0 1.0 1.0 ]
 
 		Shape "trianglemesh"
-			"integer indices" [0 1 2 0 3 2 ]
-			"point P" [ -10 0 -10  10 0 -10   10 0 10   -10 0 10 ]
+			"integer indices" [ 0 1 2 0 3 2 ]
+			"point P" [-10 0 -10 10 0 -10 10 0 10 -10 0 10 ]
 	AttributeEnd
 
 	# synthetic objects
 	SynthSceneBegin
+
 		AttributeBegin
-			#Material "kdsubsurface" "color Kd" [1.0 0.5 0.2]
-			Material "mirror" "color Kr" [1. 1. 1.]
-
-			#Scale 0.75 0.75 0.75
-
-			Translate 8.6 0 3.7
-			#Translate -5 0 3.6
-			#Rotate -5 1 0 0
-			#Rotate 10 0 0 1
-			Scale 1.5 1.5 1.5
-
-			#Shape "sphere" "float radius" [4]
-			Include "cone.pbrt"
-
-			Translate 0 1 0
+			Material "plastic"
+				"color Kd" [ 1.0 1.0 1.0 ]
+				"color Ks" [ 0.5 0.5 0.5 ]
+				"float roughness" [ 0.2 ]
 			Include "ball.pbrt"
 		AttributeEnd
 
 		AttributeBegin
+			Material "plastic"
+				"color Kd" [ 0.969 0.316 0.07 ]
+				"color Ks" [ 0.95 0.95 0.95 ]
+				"float roughness" [ 0.05 ]
+			Include "cone.pbrt"
+		AttributeEnd
 
-			Material "mirror" "color Kr" [1. 1. 1.]
+		AttributeBegin
+			Material "plastic"
+				"color Kd" [ 0.969 0.316 0.07 ]
+				"color Ks" [ 0.95 0.95 0.95 ]
+				"float roughness" [ 0.05 ]
+			Include "coneTest.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			Material "matte"
+				"color Kd" [ 0.5 0.5 0.5 ]
 			#Include "plane.pbrt"
 		AttributeEnd
+
 	SynthSceneEnd
 WorldEnd
