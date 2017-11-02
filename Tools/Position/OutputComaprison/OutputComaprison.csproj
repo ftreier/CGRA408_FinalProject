@@ -113,9 +113,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\play.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="res\play.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
