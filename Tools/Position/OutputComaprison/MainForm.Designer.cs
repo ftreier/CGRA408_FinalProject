@@ -149,7 +149,7 @@ namespace OutputComaprison
 			// 
 			this._run.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this._run.Enabled = false;
-			this._run.Image = ((System.Drawing.Image)(resources.GetObject("_run.Image")));
+			this._run.Image = global::OutputComaprison.Properties.Resources.play;
 			this._run.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this._run.Name = "_run";
 			this._run.Size = new System.Drawing.Size(36, 36);
