@@ -43,14 +43,14 @@ WorldBegin
 	# synthetic objects
 	SynthSceneBegin
 		AttributeBegin
-			Material "kdsubsurface" "color Kd" [.8 .2 .5]
+			Material "kdsubsurface" "color Kd" [1.0, 0.5, 0.2]
 			#Material "mirror" "color Kr" [1. 1. 1.]
 
 			#Translate -2 2 2
 			#Scale 0.75 0.75 0.75
 			#Shape "sphere" "float radius" [4]
-			Include "pCube1.pbrt"
-			Include "ballTri.pbrt"
+			Include "cone1.pbrt"
+			Include "ball1.pbrt"
 		AttributeEnd
 	SynthSceneEnd
 WorldEnd

@@ -1,7 +1,8 @@
 import maya.cmds as cmds
 
 
-file_path = "D:/Documents/Victoria/2017/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
+file_path = "/home/purvisjack/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
+# file_path = "D:/Documents/Victoria/2017/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
 
 
 def export_selected():
@@ -27,30 +28,27 @@ def export_selected():
 
         face_vertex_indices[f] = map(int, tokens)
 
-    # Get the vertex positions and vertex normals per face
-    face_vertex_positions = []
-    face_vertex_normals = []
+    # Flatten the face vertex indices
+    face_vertex_indices = sum(face_vertex_indices, [])
+
+    # Get the vertex positions
     vertex_positions = cmds.xform(selected_mesh + ".vtx[0:" + str(num_vertices) + "]", query=True, objectSpace=True, translation=True)
+    vertex_normals = []
 
-    for f in range(0, num_faces):
-        face_vertex_positions.append([])
-        face_vertex_normals.append([])
+    for v in range(0, num_vertices):
 
-        for v in face_vertex_indices[f]:
-            face_vertex_positions[f].append(round(vertex_positions[v], 6))
-            face_vertex_positions[f].append(round(vertex_positions[v + 1], 6))
-            face_vertex_positions[f].append(round(vertex_positions[v + 2], 6))
+        # Round the vertex position
+        vertex_positions[v] = round(vertex_positions[v], 6)
 
-            cmds.select(selected_mesh + ".vtx[" + str(v) + "]")
-            vertex_normal = cmds.polyNormalPerVertex(query=True, xyz=True)[0:3]
-            face_vertex_normals[f].append(round(vertex_normal[0], 6))
-            face_vertex_normals[f].append(round(vertex_normal[1], 6))
-            face_vertex_normals[f].append(round(vertex_normal[2], 6))
+        # Get the vertex normal for this vertex
+        cmds.select(selected_mesh + ".vtx[" + str(v) + "]")
+        vertex_normal = cmds.polyNormalPerVertex(query=True, xyz=True)[0:3]
+        vertex_normals.append(round(vertex_normal[0], 6))
+        vertex_normals.append(round(vertex_normal[1], 6))
+        vertex_normals.append(round(vertex_normal[2], 6))
 
     # Reselect the original object
     cmds.select(selected_mesh)
-
-    print vertex_positions
 
     # Write the mesh data to a pbrt file
     with open(file_path + selected_mesh + ".pbrt", "w") as file:
@@ -66,11 +64,11 @@ def export_selected():
         file.write("Rotate {0:.6f} 0 0 1\n".format(rotate[2]))
         file.write("Scale {0:.6f} {1:.6f} {2:.6f}\n".format(scale[0], scale[1], scale[2]))
 
-        # Write vertex positions and normals per face
-        for f in range(0, num_faces):
-            vertex_position_string = " ".join(map(str, face_vertex_positions[f]))
-            vertex_normal_string = " ".join(map(str, face_vertex_normals[f]))
-            file.write("Shape \"trianglemesh\"  \"integer indices\" [0 2 1] \"point P\" [{0}] \"normal N\" [{1}]\n".format(vertex_position_string, vertex_normal_string))
+        # Write vertex indices, positions and normals per face
+        vertex_indices_string = " ".join(map(str, face_vertex_indices))
+        vertex_position_string = " ".join(map(str, vertex_positions))
+        vertex_normal_string = " ".join(map(str, vertex_normals))
+        file.write("Shape \"trianglemesh\"  \"integer indices\" [{0}] \"point P\" [{1}] \"normal N\" [{2}]\n".format(vertex_indices_string, vertex_position_string, vertex_normal_string))
 
 
 if __name__ == '__main__':
