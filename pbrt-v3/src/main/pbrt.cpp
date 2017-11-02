@@ -154,7 +154,5 @@ int main(int argc, char *argv[]) {
 				Error("Couldn't open scene file \"%s\"", f.c_str());
 	}
 	pbrtCleanup();
-	std::string s;
-	std::cin >> s;
 	return 0;
 }
