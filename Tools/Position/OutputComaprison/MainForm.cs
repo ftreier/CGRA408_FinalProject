@@ -150,7 +150,7 @@ namespace OutputComaprison
 
 		#region Event handlers
 
-		private void MainForm_Load(object sender, System.EventArgs e)
+		private void MainForm_Load(object sender, EventArgs e)
 		{
 			WindowState = FormWindowState.Maximized;
 
@@ -177,7 +177,7 @@ namespace OutputComaprison
 			Settings.Default.Save();
 		}
 
-		private void _baseImgPathTb_TextChanged(object sender, System.EventArgs e)
+		private void _baseImgPathTb_TextChanged(object sender, EventArgs e)
 		{
 			_baseImgPath = _baseImgPathTb.Text;
 			UpdateBaseImgPath();
@@ -215,7 +215,7 @@ namespace OutputComaprison
 			}
 		}
 
-		private void ChildForm_SizeChanged(object sender, System.EventArgs e)
+		private void ChildForm_SizeChanged(object sender, EventArgs e)
 		{
 			var childForm = sender as DockableToolWindow;
 			if (childForm != null && !_updatingSize.Contains(childForm))
@@ -227,24 +227,24 @@ namespace OutputComaprison
 			}
 		}
 
-		#endregion
-
 		private void _run_Click(object sender, EventArgs e)
 		{
 			if (!File.Exists(_editor.SceneFile))
 			{
-				MessageBox.Show("Scene file does not exist. Select valid scene file and try again.", "Scene file does not exist",
+				MessageBox.Show(@"Scene file does not exist. Select valid scene file and try again.", @"Scene file does not exist",
 					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return;
 			}
 
 			_editor.Save();
 			string command = $"/C {PbrtPath} {_editor.SceneFile}";
-			var pi = new ProcessStartInfo("cmd.exe", command) {WorkingDirectory = _baseImgPath};
+			var pi = new ProcessStartInfo("cmd.exe", command) { WorkingDirectory = _baseImgPath };
 			var p = Process.Start(pi);
 			p.WaitForExit();
 
 			ReloadImages();
 		}
+
+		#endregion
 	}
 }
