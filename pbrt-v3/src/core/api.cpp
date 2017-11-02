@@ -1492,8 +1492,9 @@ void differentialRendering()
 					 abs(synthetic[_noOfChannels * i + 2] - environment[_noOfChannels * i + 2]);
 
 		diff = diff > 0 ? 1 : 0;
-		float notDiff = 1 - diff;
 		printMask[_noOfChannels * i + 0] = printMask[_noOfChannels * i + 1] = printMask[_noOfChannels * i + 2] = diff;
+
+		float notDiff = 1 - diff;
 
 		float changeR = (complete[_noOfChannels * i + 0] - local[_noOfChannels * i + 0]) * notDiff;
 		float changeG = (complete[_noOfChannels * i + 1] - local[_noOfChannels * i + 1]) * notDiff;
@@ -1505,9 +1506,9 @@ void differentialRendering()
 		// Calculate final image
 		float orig[3];
 		bg[i].ToRGB(orig);
-		fin[_noOfChannels * i + 0] = orig[0] * notDiff + complete[_noOfChannels * i + 0] * diff + changeR;
-		fin[_noOfChannels * i + 1] = orig[1] * notDiff + complete[_noOfChannels * i + 1] * diff + changeG;
-		fin[_noOfChannels * i + 2] = orig[2] * notDiff + complete[_noOfChannels * i + 2] * diff + changeB;
+		fin[_noOfChannels * i + 0] = orig[0] * notDiff + synthetic[_noOfChannels * i + 0] * diff + changeR;
+		fin[_noOfChannels * i + 1] = orig[1] * notDiff + synthetic[_noOfChannels * i + 1] * diff + changeG;
+		fin[_noOfChannels * i + 2] = orig[2] * notDiff + synthetic[_noOfChannels * i + 2] * diff + changeB;
 	}
 
 	if(extension.compare(".png") == 0)
