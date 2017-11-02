@@ -36,7 +36,7 @@ namespace OutputComaprison
 
 			if (!File.Exists(filename))
 			{
-				filename = Path.Combine(BasePath, FileName + ".exr");
+				filename = Path.Combine(BasePath, FileName + ".png");
 				if (!File.Exists(filename))
 				{
 					Console.WriteLine(filename + @" does not exist. Aborting.");

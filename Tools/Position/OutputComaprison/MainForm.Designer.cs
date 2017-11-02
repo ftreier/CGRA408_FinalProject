@@ -34,6 +34,8 @@ namespace OutputComaprison
 			this._dockContainer = new Crom.Controls.DockContainer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this._run = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this._pbrtPathLbl = new System.Windows.Forms.ToolStripLabel();
 			this._pbrtPathTb = new System.Windows.Forms.ToolStripTextBox();
 			this._pbrtPathBtn = new System.Windows.Forms.ToolStripButton();
@@ -41,8 +43,6 @@ namespace OutputComaprison
 			this._baseImgPathLbl = new System.Windows.Forms.ToolStripLabel();
 			this._baseImgPathTb = new System.Windows.Forms.ToolStripTextBox();
 			this._baseImgPathBtn = new System.Windows.Forms.ToolStripButton();
-			this._run = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -55,9 +55,9 @@ namespace OutputComaprison
 			this._dockContainer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._dockContainer.LeftPanelWidth = 246;
 			this._dockContainer.Location = new System.Drawing.Point(3, 42);
-			this._dockContainer.MinimumSize = new System.Drawing.Size(850, 755);
+			this._dockContainer.MinimumSize = new System.Drawing.Size(727, 528);
 			this._dockContainer.Name = "_dockContainer";
-			this._dockContainer.RightPanelWidth = 400;
+			this._dockContainer.RightPanelWidth = 277;
 			this._dockContainer.Size = new System.Drawing.Size(1194, 755);
 			this._dockContainer.TabIndex = 0;
 			this._dockContainer.TopPanelHeight = 400;
@@ -81,20 +81,36 @@ namespace OutputComaprison
 			// 
 			this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._run,
-            this.toolStripSeparator2,
-            this._pbrtPathLbl,
-            this._pbrtPathTb,
-            this._pbrtPathBtn,
-            this.toolStripSeparator1,
-            this._baseImgPathLbl,
-            this._baseImgPathTb,
-            this._baseImgPathBtn});
+			this._run,
+			this.toolStripSeparator2,
+			this._pbrtPathLbl,
+			this._pbrtPathTb,
+			this._pbrtPathBtn,
+			this.toolStripSeparator1,
+			this._baseImgPathLbl,
+			this._baseImgPathTb,
+			this._baseImgPathBtn});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(1200, 39);
 			this.toolStrip1.TabIndex = 1;
 			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// _run
+			// 
+			this._run.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this._run.Enabled = false;
+			this._run.Image = ((System.Drawing.Image)(resources.GetObject("_run.Image")));
+			this._run.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this._run.Name = "_run";
+			this._run.Size = new System.Drawing.Size(36, 36);
+			this._run.Text = "Run";
+			this._run.Click += new System.EventHandler(this._run_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
 			// 
 			// _pbrtPathLbl
 			// 
@@ -144,22 +160,6 @@ namespace OutputComaprison
 			this._baseImgPathBtn.Size = new System.Drawing.Size(34, 36);
 			this._baseImgPathBtn.Text = "...";
 			this._baseImgPathBtn.Click += new System.EventHandler(this._baseImgPathBtn_Click);
-			// 
-			// _run
-			// 
-			this._run.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this._run.Enabled = false;
-			this._run.Image = global::OutputComaprison.Properties.Resources.play;
-			this._run.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this._run.Name = "_run";
-			this._run.Size = new System.Drawing.Size(36, 36);
-			this._run.Text = "Run";
-			this._run.Click += new System.EventHandler(this._run_Click);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
 			// 
 			// MainForm
 			// 

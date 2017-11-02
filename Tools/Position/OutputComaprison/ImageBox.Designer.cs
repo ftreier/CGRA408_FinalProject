@@ -28,22 +28,12 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this._pictureBox = new System.Windows.Forms.PictureBox();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this._label = new System.Windows.Forms.Label();
-			((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
+			this._pictureBox = new System.Windows.Forms.PictureBox();
 			this.tableLayoutPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// _pictureBox
-			// 
-			this._pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._pictureBox.Location = new System.Drawing.Point(3, 3);
-			this._pictureBox.Name = "_pictureBox";
-			this._pictureBox.Size = new System.Drawing.Size(144, 119);
-			this._pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this._pictureBox.TabIndex = 0;
-			this._pictureBox.TabStop = false;
 			// 
 			// tableLayoutPanel1
 			// 
@@ -70,15 +60,25 @@
 			this._label.TabIndex = 1;
 			this._label.Text = "label1";
 			// 
+			// _pictureBox
+			// 
+			this._pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._pictureBox.Location = new System.Drawing.Point(3, 3);
+			this._pictureBox.Name = "_pictureBox";
+			this._pictureBox.Size = new System.Drawing.Size(144, 119);
+			this._pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this._pictureBox.TabIndex = 0;
+			this._pictureBox.TabStop = false;
+			// 
 			// ImageBox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Name = "ImageBox";
-			((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
 			this.ResumeLayout(false);
 
 		}

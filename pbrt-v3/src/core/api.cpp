@@ -1417,6 +1417,16 @@ void renderScene(float* buffer, bool inclLocal, bool inclSynth)
 
 void differentialRendering()
 {
+	string filename = renderOptions->FilmParams.FindOneFilename("filename", "");
+	if(filename.empty())
+	{
+		cout << "Filename needs to be specified." << endl;
+		return;
+	}
+
+	string extension = filename.substr(filename.find_last_of('.'));
+	transform(extension.begin(), extension.end(), extension.begin(), tolower);
+
 	string bgFile = renderOptions->_differentialBg.FindOneFilename("filename", "");
 	if (bgFile.empty())
 	{
@@ -1437,44 +1447,39 @@ void differentialRendering()
 	int noOfPixels = xRes * yRes;
 	int bufferSize = noOfPixels * _noOfChannels;
 
-
-
 	// render the complete scene (local + synthetic)
 	cout << "Rendering complete scene" << endl;
 	float *complete = new float[bufferSize];
 	renderScene(complete, true, true);
 	auto bounds = Bounds2i({ 0, 0 }, size);
-	WriteImage("complete.exr", complete, bounds, size);
 
-	float *original = new float[bufferSize];
-	for (int i = 0; i < noOfPixels; i++)
-	{
-		float *rgb = new float[3];
-		bg[i].ToRGB(rgb);
-		//bg[i].ToRGB(rgb);
-		original[i * 3 + 0] = rgb[0];
-		original[i * 3 + 1] = rgb[1];
-		original[i * 3 + 2] = rgb[2];
-	}
-	WriteImage("test.exr", original, bounds, size);
+	//float *original = new float[bufferSize];
+	//for (int i = 0; i < noOfPixels; i++)
+	//{
+	//	float *rgb = new float[3];
+	//	bg[i].ToRGB(rgb);
+	//	//bg[i].ToRGB(rgb);
+	//	original[i * 3 + 0] = rgb[0];
+	//	original[i * 3 + 1] = rgb[1];
+	//	original[i * 3 + 2] = rgb[2];
+	//}
+
+	//WriteImage("test.exr", original, bounds, size);
 
 	// render the local scene
 	cout << "Rendering local scene" << endl;
 	float *local = new float[bufferSize];
 	renderScene(local, true, false);
-	WriteImage("local.exr", local, bounds, size);
 
 	// render the synthetic scene
 	cout << "Rendering synthetic scene" << endl;
 	float *synthetic = new float[bufferSize];
 	renderScene(synthetic, false, true);
-	WriteImage("synthetic.exr", synthetic, bounds, size);
 
 	// render environment only
 	cout << "Rendering environment" << endl;
 	float *environment = new float[bufferSize];
 	renderScene(environment, false, false);
-	WriteImage("environment.exr", environment, bounds, size);
 
 	float *printMask = new float[bufferSize];
 	float *diffImg = new float[bufferSize];
@@ -1505,9 +1510,26 @@ void differentialRendering()
 		fin[_noOfChannels * i + 2] = orig[2] * notDiff + complete[_noOfChannels * i + 2] * diff + changeB;
 	}
 
-	WriteImage("mask.exr", printMask, bounds, size);
-	WriteImage("diff.exr", diffImg, bounds, size);
-	WriteImage("final.exr", fin, bounds, size);
+	if(extension.compare(".png") == 0)
+	{
+		WriteNoGammaCorrectedPNGImage("complete" + extension, complete, bounds);
+		WriteNoGammaCorrectedPNGImage("local" + extension, local, bounds);
+		WriteNoGammaCorrectedPNGImage("synthetic" + extension, synthetic, bounds);
+		WriteNoGammaCorrectedPNGImage("environment" + extension, environment, bounds);
+		WriteNoGammaCorrectedPNGImage("mask" + extension, printMask, bounds);
+		WriteNoGammaCorrectedPNGImage("diff" + extension, diffImg, bounds);
+		WriteNoGammaCorrectedPNGImage("final" + extension, fin, bounds);
+	}
+	else
+	{
+		WriteImage("complete" + extension, complete, bounds, size);
+		WriteImage("local" + extension, local, bounds, size);
+		WriteImage("synthetic" + extension, synthetic, bounds, size);
+		WriteImage("environment" + extension, environment, bounds, size);
+		WriteImage("mask" + extension, printMask, bounds, size);
+		WriteImage("diff" + extension, diffImg, bounds, size);
+		WriteImage("final" + extension, fin, bounds, size);
+	}
 
 	// cleaning up
 	delete[] complete;

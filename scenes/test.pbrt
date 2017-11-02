@@ -1,7 +1,7 @@
 Film "image"
   "integer xresolution" [ 1200 ]
   "integer yresolution" [ 800 ]
-  "string filename" [ "test.exr" ]
+  "string filename" [ "test.png" ]
 PixelFilter "box"
 LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 
