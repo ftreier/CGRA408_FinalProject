@@ -1,29 +1,29 @@
 Film "image"
-  "integer xresolution" [ 1200 ]
-  "integer yresolution" [ 800 ]
-  "string filename" [ "test.png" ]
+  "integer xresolution" [ 2400 ]
+  "integer yresolution" [ 1600 ]
+  "string filename" [ "test.exr" ]
 PixelFilter "box"
 LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "halton" "integer pixelsamples" [ 4 ]
+Sampler "halton" "integer pixelsamples" [ 32 ]
 
 WorldBegin
 
 	# distance scene
 	AttributeBegin
-
 		Rotate -90 1 0 0
-		Rotate 180 0 0 1
+		Rotate 200 0 0 1
+		Scale 2.0 2.0 2.0
 		LightSource "infinite"
 			"string mapname" [ "env_map_small.exr" ]
-			"rgb L" [ 0.9 0.9 0.9 ]
+			"rgb L" [ 1.0 1.0 1.0 ]
 	AttributeEnd
 
 	# scene photo
-	ScenePhoto "string filename" "test_.png"
+	ScenePhoto "string filename" "background_medium.png"
 
 	# local scene
 	AttributeBegin
@@ -38,27 +38,41 @@ WorldBegin
 	# synthetic objects
 	SynthSceneBegin
 
+		MakeNamedMaterial "coneA"
+			"string type" "plastic"
+			"color Kd" [ 0.969 0.316 0.07 ]
+			"color Ks" [ 1.0 1.0 1.0 ]
+			"float roughness" [ 0.05 ]
+
+		MakeNamedMaterial "coneB"
+			"string type" "translucent"
+			"color Kd" [ 0.969 0.316 0.07 ]
+			"color Ks" [ 1.0 1.0 1.0 ]
+			"float roughness" [ 0.05 ]
+			"color reflect" [ 0.0 0.0 0.0 ]
+			"color transmit" [ 1.0 1.0 1.0 ]
+
+		MakeNamedMaterial "conePlastic"
+			"string type" "mix"
+			"color amount" [ 0.2 0.2 0.2 ]
+			"string namedmaterial1" "coneA"
+			"string namedmaterial2" "coneB"
+
 		AttributeBegin
 			Material "plastic"
 				"color Kd" [ 1.0 1.0 1.0 ]
-				"color Ks" [ 0.5 0.5 0.5 ]
+				"color Ks" [ 0.75 0.75 0.75 ]
 				"float roughness" [ 0.2 ]
 			Include "ball.pbrt"
 		AttributeEnd
 
 		AttributeBegin
-			Material "plastic"
-				"color Kd" [ 0.969 0.316 0.07 ]
-				"color Ks" [ 0.95 0.95 0.95 ]
-				"float roughness" [ 0.05 ]
+			NamedMaterial "conePlastic"
 			Include "cone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
-			Material "plastic"
-				"color Kd" [ 0.969 0.316 0.07 ]
-				"color Ks" [ 0.95 0.95 0.95 ]
-				"float roughness" [ 0.05 ]
+			NamedMaterial "conePlastic"
 			Include "coneTest.pbrt"
 		AttributeEnd
 
