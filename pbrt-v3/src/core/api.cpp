@@ -115,6 +115,7 @@
 #include "media/homogeneous.h"
 #include <map>
 #include <stdio.h>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -1415,6 +1416,62 @@ void renderScene(float* buffer, bool inclLocal, bool inclSynth)
 	ProfilerState = ProfToBits(Prof::SceneConstruction);
 }
 
+inline bool fileExists(const string& name) {
+	struct stat buffer;
+	return (stat(name.c_str(), &buffer) == 0);
+}
+
+void writeImg(const string &name, const string &extension, const Float *rgb, const Bounds2i bounds, const Point2i &size)
+{
+	if (extension.compare(".png") == 0)
+	{
+		WriteNoGammaCorrectedPNGImage(name + extension, rgb, bounds);
+	}
+	else
+	{
+		WriteImage(name + extension, rgb, bounds, size);
+	}
+}
+
+	void loadOrRenderImage(string name, string extension, int xRes, int yRes, Bounds2i bounds, float* buffer)
+	{
+		bool imgLoaded = false;
+		auto filename = name + extension;
+		if(fileExists(filename))
+		{
+			Point2i size;
+			unique_ptr<RGBSpectrum[]> img = ReadImage(filename, &size);
+
+			if (size.x != xRes || size.y != yRes)
+			{
+				cout << name << " scene file with wrong dimentins found. Deleting file " << filename << endl;
+				remove(filename.c_str());
+			}
+			else
+			{
+				cout << "Reusing " << name << " scene" << endl;
+
+				for (int i = 0; i < xRes * yRes; i++ )
+				{
+					float *rgb = new float[3];
+					img[i].ToRGB(rgb);
+					buffer[i * 3 + 0] = rgb[0];
+					buffer[i * 3 + 1] = rgb[1];
+					buffer[i * 3 + 2] = rgb[2];
+				}
+
+				imgLoaded = true;
+			}
+		}
+	
+		if(!imgLoaded)
+		{
+			cout << "Rendering " << name << " scene" << endl;
+			renderScene(buffer, true, false);
+			writeImg(name, extension, buffer, bounds, Point2i(xRes, yRes));
+		}
+	}
+
 void differentialRendering()
 {
 	string filename = renderOptions->FilmParams.FindOneFilename("filename", "");
@@ -1425,7 +1482,7 @@ void differentialRendering()
 	}
 
 	string extension = filename.substr(filename.find_last_of('.'));
-//	transform(extension.begin(), extension.end(), extension.begin(), tolower);
+	//transform(extension.begin(), extension.end(), extension.begin(), tolower);
 
 	string bgFile = renderOptions->_differentialBg.FindOneFilename("filename", "");
 	if (bgFile.empty())
@@ -1435,7 +1492,7 @@ void differentialRendering()
 	}
 
 	Point2i size;
-	std::unique_ptr<RGBSpectrum[]> bg = ReadImage(bgFile, &size);
+	unique_ptr<RGBSpectrum[]> bg = ReadImage(bgFile, &size);
 	int xRes = renderOptions->FilmParams.FindOneInt("xresolution", 0);
 	int yRes = renderOptions->FilmParams.FindOneInt("yresolution", 0);
 	if (size.x != xRes || size.y != yRes)
@@ -1452,6 +1509,7 @@ void differentialRendering()
 	float *complete = new float[bufferSize];
 	renderScene(complete, true, true);
 	auto bounds = Bounds2i({ 0, 0 }, size);
+	writeImg("complete", extension, complete, bounds, size);
 
 	//float *original = new float[bufferSize];
 	//for (int i = 0; i < noOfPixels; i++)
@@ -1467,19 +1525,21 @@ void differentialRendering()
 	//WriteImage("test.exr", original, bounds, size);
 
 	// render the local scene
-	cout << "Rendering local scene" << endl;
 	float *local = new float[bufferSize];
-	renderScene(local, true, false);
+	loadOrRenderImage("local", extension, xRes, yRes, bounds, local);
 
 	// render the synthetic scene
 	cout << "Rendering synthetic scene" << endl;
 	float *synthetic = new float[bufferSize];
 	renderScene(synthetic, false, true);
+	writeImg("synthetic", extension, synthetic, bounds, size);
 
 	// render environment only
-	cout << "Rendering environment" << endl;
 	float *environment = new float[bufferSize];
-	renderScene(environment, false, false);
+	loadOrRenderImage("environment", extension, xRes, yRes, bounds, environment);
+	//cout << "Rendering environment" << endl;
+	//renderScene(environment, false, false);
+	//writeImg("environment", extension, environment, bounds, size);
 
 	float *printMask = new float[bufferSize];
 	float *diffImg = new float[bufferSize];
@@ -1511,26 +1571,31 @@ void differentialRendering()
 		fin[_noOfChannels * i + 2] = orig[2] * notDiff + synthetic[_noOfChannels * i + 2] * diff + changeB;
 	}
 
-	if(extension.compare(".png") == 0)
-	{
-		WriteNoGammaCorrectedPNGImage("complete" + extension, complete, bounds);
-		WriteNoGammaCorrectedPNGImage("local" + extension, local, bounds);
-		WriteNoGammaCorrectedPNGImage("synthetic" + extension, synthetic, bounds);
-		WriteNoGammaCorrectedPNGImage("environment" + extension, environment, bounds);
-		WriteNoGammaCorrectedPNGImage("mask" + extension, printMask, bounds);
-		WriteNoGammaCorrectedPNGImage("diff" + extension, diffImg, bounds);
-		WriteNoGammaCorrectedPNGImage("final" + extension, fin, bounds);
-	}
-	else
-	{
-		WriteImage("complete" + extension, complete, bounds, size);
-		WriteImage("local" + extension, local, bounds, size);
-		WriteImage("synthetic" + extension, synthetic, bounds, size);
-		WriteImage("environment" + extension, environment, bounds, size);
-		WriteImage("mask" + extension, printMask, bounds, size);
-		WriteImage("diff" + extension, diffImg, bounds, size);
-		WriteImage("final" + extension, fin, bounds, size);
-	}
+	writeImg("mask", extension, printMask, bounds, size);
+	writeImg("diff", extension, diffImg, bounds, size);
+	writeImg("final", extension, fin, bounds, size);
+
+	//if(extension.compare(".png") == 0)
+	//{
+	//	WriteNoGammaCorrectedPNGImage("complete" + extension, complete, bounds);
+	//	WriteNoGammaCorrectedPNGImage("local" + extension, local, bounds);
+	//	WriteNoGammaCorrectedPNGImage("synthetic" + extension, synthetic, bounds);
+	//	WriteNoGammaCorrectedPNGImage("environment" + extension, environment, bounds);
+	//	WriteNoGammaCorrectedPNGImage("mask" + extension, printMask, bounds);
+	//	WriteNoGammaCorrectedPNGImage("diff" + extension, diffImg, bounds);
+	//	WriteNoGammaCorrectedPNGImage("final" + extension, fin, bounds);
+	//}
+	//else
+	//{
+	//	
+	//	//WriteImage("complete" + extension, complete, bounds, size);
+	//	//WriteImage("local" + extension, local, bounds, size);
+	//	//WriteImage("synthetic" + extension, synthetic, bounds, size);
+	//	//WriteImage("environment" + extension, environment, bounds, size);
+	//	//WriteImage("mask" + extension, printMask, bounds, size);
+	//	//WriteImage("diff" + extension, diffImg, bounds, size);
+	//	//WriteImage("final" + extension, fin, bounds, size);
+	//}
 
 	// cleaning up
 	delete[] complete;
