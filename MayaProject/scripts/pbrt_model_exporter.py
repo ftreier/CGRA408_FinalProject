@@ -49,10 +49,14 @@ def export_selected():
 
         # Get the vertex normal for this vertex
         cmds.select(triangle_mesh + ".vtx[" + str(v) + "]")
-        vertex_normal = cmds.polyNormalPerVertex(query=True, xyz=True)[0:3]
-        vertex_normals.append(round(vertex_normal[0], 6))
-        vertex_normals.append(round(vertex_normal[1], 6))
-        vertex_normals.append(round(vertex_normal[2], 6))
+        all_vertex_normals = cmds.polyNormalPerVertex(query=True, xyz=True)
+        vertex_normal_x = (all_vertex_normals[0] + all_vertex_normals[3] + all_vertex_normals[6] + all_vertex_normals[9]) / 4
+        vertex_normal_y = (all_vertex_normals[1] + all_vertex_normals[4] + all_vertex_normals[7] + all_vertex_normals[10]) / 4
+        vertex_normal_z = (all_vertex_normals[2] + all_vertex_normals[5] + all_vertex_normals[8] + all_vertex_normals[11]) / 4
+
+        vertex_normals.append(round(vertex_normal_x, 6))
+        vertex_normals.append(round(vertex_normal_y, 6))
+        vertex_normals.append(round(vertex_normal_z, 6))
 
     # Write the mesh data to a pbrt file
     with open(file_path + selected_mesh + ".pbrt", "w") as file:
