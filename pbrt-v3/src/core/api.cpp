@@ -1425,7 +1425,7 @@ void differentialRendering()
 	}
 
 	string extension = filename.substr(filename.find_last_of('.'));
-	transform(extension.begin(), extension.end(), extension.begin(), tolower);
+//	transform(extension.begin(), extension.end(), extension.begin(), tolower);
 
 	string bgFile = renderOptions->_differentialBg.FindOneFilename("filename", "");
 	if (bgFile.empty())

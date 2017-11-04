@@ -8,7 +8,7 @@ LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "halton" "integer pixelsamples" [ 16 ]
+Sampler "halton" "integer pixelsamples" [ 32 ]
 
 WorldBegin
 
@@ -19,7 +19,7 @@ WorldBegin
 		Rotate 180 0 0 1
 		LightSource "infinite"
 			"string mapname" [ "env_map_small.exr" ]
-			"rgb L" [ 0.9 0.9 0.9 ]
+			"rgb L" [ 1.0 1.0 1.0 ]
 	AttributeEnd
 
 	# scene photo
@@ -47,22 +47,24 @@ WorldBegin
 		AttributeEnd
 
 		AttributeBegin
-			Material "translucent"
+			Material "substrate"
 				"color Kd" [ 0.969 0.316 0.07 ]
 				"color Ks" [ 1.0 1.0 1.0 ]
-				"float roughness" [ 0.0 ]
-				"color reflect" [ 0.75 0.75 0.75 ]
-				"color transmit" [ 0.25 0.25 0.25 ]
+				"float eta" [ 1.49 ]
+				#"float roughness" [ 0.05 ]
+				#"color reflect" [ 0.75 0.75 0.75 ]
+				#"color transmit" [ 0.25 0.25 0.25 ]
 			Include "cone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
-			Material "translucent"
+			Material "substrate"
 				"color Kd" [ 0.969 0.316 0.07 ]
 				"color Ks" [ 1.0 1.0 1.0 ]
-				"float roughness" [ 0.0 ]
-				"color reflect" [ 0.75 0.75 0.75 ]
-				"color transmit" [ 0.25 0.25 0.25 ]
+				"float eta" [ 1.49 ]
+				#"float roughness" [ 0.05 ]
+				#"color reflect" [ 0.75 0.75 0.75 ]
+				#"color transmit" [ 0.25 0.25 0.25 ]
 			Include "coneTest.pbrt"
 		AttributeEnd
 
