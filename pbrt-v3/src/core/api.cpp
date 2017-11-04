@@ -1433,7 +1433,7 @@ void writeImg(const string &name, const string &extension, const Float *rgb, con
 	}
 }
 
-	void loadOrRenderImage(string name, string extension, int xRes, int yRes, Bounds2i bounds, float* buffer)
+	void loadOrRenderImage(string name, string extension, int xRes, int yRes, Bounds2i bounds, float* buffer, bool inclLocal)
 	{
 		bool imgLoaded = false;
 		auto filename = name + extension;
@@ -1467,7 +1467,7 @@ void writeImg(const string &name, const string &extension, const Float *rgb, con
 		if(!imgLoaded)
 		{
 			cout << "Rendering " << name << " scene" << endl;
-			renderScene(buffer, true, false);
+			renderScene(buffer, inclLocal, false);
 			writeImg(name, extension, buffer, bounds, Point2i(xRes, yRes));
 		}
 	}
@@ -1526,7 +1526,10 @@ void differentialRendering()
 
 	// render the local scene
 	float *local = new float[bufferSize];
-	loadOrRenderImage("local", extension, xRes, yRes, bounds, local);
+	loadOrRenderImage("local", extension, xRes, yRes, bounds, local, true);
+	//cout << "Rendering local scene" << endl;
+	//renderScene(local, true, false);
+	//writeImg("local", extension, local, bounds, size);
 
 	// render the synthetic scene
 	cout << "Rendering synthetic scene" << endl;
@@ -1536,7 +1539,7 @@ void differentialRendering()
 
 	// render environment only
 	float *environment = new float[bufferSize];
-	loadOrRenderImage("environment", extension, xRes, yRes, bounds, environment);
+	loadOrRenderImage("environment", extension, xRes, yRes, bounds, environment, false);
 	//cout << "Rendering environment" << endl;
 	//renderScene(environment, false, false);
 	//writeImg("environment", extension, environment, bounds, size);
@@ -1551,7 +1554,7 @@ void differentialRendering()
 					 abs(synthetic[_noOfChannels * i + 1] - environment[_noOfChannels * i + 1]) +
 					 abs(synthetic[_noOfChannels * i + 2] - environment[_noOfChannels * i + 2]);
 
-		diff = diff > 0 ? 1 : 0;
+		diff = diff > 0.001 ? 1 : 0;
 		printMask[_noOfChannels * i + 0] = printMask[_noOfChannels * i + 1] = printMask[_noOfChannels * i + 2] = diff;
 
 		float notDiff = 1 - diff;
