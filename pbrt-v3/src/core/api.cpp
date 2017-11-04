@@ -1554,7 +1554,7 @@ void differentialRendering()
 					 abs(synthetic[_noOfChannels * i + 1] - environment[_noOfChannels * i + 1]) +
 					 abs(synthetic[_noOfChannels * i + 2] - environment[_noOfChannels * i + 2]);
 
-		diff = diff > 0.001 ? 1 : 0;
+		diff = diff > 0.01 ? 1 : 0;
 		printMask[_noOfChannels * i + 0] = printMask[_noOfChannels * i + 1] = printMask[_noOfChannels * i + 2] = diff;
 
 		float notDiff = 1 - diff;

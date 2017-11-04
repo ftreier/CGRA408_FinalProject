@@ -1,21 +1,22 @@
 Film "image"
   "integer xresolution" [ 2400 ]
   "integer yresolution" [ 1600 ]
-  "string filename" [ "test.png" ]
+  "string filename" [ "test.exr" ]
 PixelFilter "box"
 LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "halton" "integer pixelsamples" [ 64 ]
+Sampler "halton" "integer pixelsamples" [ 32 ]
 
 WorldBegin
 
 	# distance scene
 	AttributeBegin
 		Rotate -90 1 0 0
-		Rotate 180 0 0 1
+		Rotate 200 0 0 1
+		Scale 2.0 2.0 2.0
 		LightSource "infinite"
 			"string mapname" [ "env_map_small.exr" ]
 			"rgb L" [ 1.0 1.0 1.0 ]
@@ -53,7 +54,7 @@ WorldBegin
 
 		MakeNamedMaterial "conePlastic"
 			"string type" "mix"
-			"color amount" [ 0.5 0.5 0.5 ]
+			"color amount" [ 0.2 0.2 0.2 ]
 			"string namedmaterial1" "coneA"
 			"string namedmaterial2" "coneB"
 
