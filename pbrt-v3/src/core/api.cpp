@@ -119,6 +119,7 @@
 #include <iostream>
 #include <fstream>
 #include "ext/stringExtensions.h"
+#include <iomanip>
 
 using namespace std;
 
@@ -1586,6 +1587,12 @@ void differentialRendering()
 	writeImg("mask", extension, printMask, bounds, size);
 	writeImg("diff", extension, diffImg, bounds, size);
 	writeImg("final", extension, fin, bounds, size);
+
+	// Write actual usable image
+	string filenameOnly = filename.substr(0, filename.find_last_of('.'));
+	stringstream ss;
+	ss << filenameOnly << setw(4) << setfill('0') << PbrtOptions.frameNumber;
+	writeImg(ss.str(), extension, fin, bounds, size);
 
 	//if(extension.compare(".png") == 0)
 	//{
