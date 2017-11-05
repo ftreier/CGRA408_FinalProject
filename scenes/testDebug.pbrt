@@ -15,6 +15,7 @@ WorldBegin
 
 	# distand scene
 	AttributeBegin
+		AnimationFile "string filename" "blabla"
 		Rotate -90 1 0 0
 		LightSource "infinite" 
 				"string mapname" [ "doge2_latlongDebug.png" ] 

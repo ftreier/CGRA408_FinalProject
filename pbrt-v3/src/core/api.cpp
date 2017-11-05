@@ -116,6 +116,10 @@
 #include <map>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <iostream>
+#include <fstream>
+#include "ext/stringExtensions.h"
+#include <iomanip>
 
 using namespace std;
 
@@ -1484,6 +1488,12 @@ void differentialRendering()
 	string extension = filename.substr(filename.find_last_of('.'));
 	//transform(extension.begin(), extension.end(), extension.begin(), tolower);
 
+	double tolerance = 0.01;
+	if(extension.compare(".png") == 0)
+	{
+		tolerance = 0.04;
+	}
+
 	string bgFile = renderOptions->_differentialBg.FindOneFilename("filename", "");
 	if (bgFile.empty())
 	{
@@ -1554,7 +1564,7 @@ void differentialRendering()
 					 abs(synthetic[_noOfChannels * i + 1] - environment[_noOfChannels * i + 1]) +
 					 abs(synthetic[_noOfChannels * i + 2] - environment[_noOfChannels * i + 2]);
 
-		diff = diff > 0.01 ? 1 : 0;
+		diff = diff > tolerance ? 1 : 0;
 		printMask[_noOfChannels * i + 0] = printMask[_noOfChannels * i + 1] = printMask[_noOfChannels * i + 2] = diff;
 
 		float notDiff = 1 - diff;
@@ -1577,6 +1587,12 @@ void differentialRendering()
 	writeImg("mask", extension, printMask, bounds, size);
 	writeImg("diff", extension, diffImg, bounds, size);
 	writeImg("final", extension, fin, bounds, size);
+
+	// Write actual usable image
+	string filenameOnly = filename.substr(0, filename.find_last_of('.'));
+	stringstream ss;
+	ss << filenameOnly << setw(4) << setfill('0') << PbrtOptions.frameNumber;
+	writeImg(ss.str(), extension, fin, bounds, size);
 
 	//if(extension.compare(".png") == 0)
 	//{
@@ -1693,6 +1709,74 @@ void cgraSynthSceneBegin()
 void cgraSynthSceneEnd()
 {
 	_isSynthScene = false;
+}
+
+void cgraAnimation(const ParamSet params)
+{
+	string file = params.FindOneFilename("filename", "");
+	if(file.empty() || PbrtOptions.frameNumber == 0)
+	{
+		return;
+	}
+
+	string line;
+	ifstream myfile(file);
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			if(line[0] == '\t' || line[0] == ' ')
+			{
+				continue;
+			}
+
+			try
+			{
+				int index = stoi(line);
+				if (index == PbrtOptions.frameNumber)
+				{
+					while(getline(myfile, line))
+					{
+						if (line[0] != '\t' && line[0] != ' ')
+						{
+							return;
+						}
+
+						trim(line);
+
+						if(line.empty())
+						{
+							continue;
+						}
+
+						vector<string> parts = splitString(line, " ");
+						if(parts[0].compare("Translate") == 0)
+						{
+							pbrtTranslate(stof(parts[1]), stof(parts[2]), stof(parts[3]));
+						}
+						else if(parts[0].compare("Rotate") == 0)
+						{
+							pbrtRotate(stof(parts[1]), stof(parts[2]), stof(parts[3]), stof(parts[4]));
+						}
+						else
+						{
+							cout << "not supported command(" << parts[0] << ") found in animation file.";
+						}
+					}
+				}
+			}
+			catch(exception)
+			{
+				cout << "unexpected tolken found in animation file.";
+			}
+		}
+
+		myfile.close();
+	}
+	else
+	{
+		cout << "Unable to open animation file.";
+	}
 }
 
 Scene *RenderOptions::MakeScene(bool includeLocal, bool includeSynth)

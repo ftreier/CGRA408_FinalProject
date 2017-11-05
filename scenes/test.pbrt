@@ -59,6 +59,7 @@ WorldBegin
 			"string namedmaterial2" "coneB"
 
 		AttributeBegin
+			AnimationFile "string filename" "blabla"
 			Material "plastic"
 				"color Kd" [ 1.0 1.0 1.0 ]
 				"color Ks" [ 0.75 0.75 0.75 ]
