@@ -1695,6 +1695,11 @@ void cgraSynthSceneEnd()
 	_isSynthScene = false;
 }
 
+void cgraAnimation(const ParamSet params)
+{
+	
+}
+
 Scene *RenderOptions::MakeScene(bool includeLocal, bool includeSynth)
 {
 	vector<shared_ptr<Primitive>> prim = vector<shared_ptr<Primitive>>();

@@ -39,6 +39,7 @@ WorldBegin
 	SynthSceneBegin
 
 		AttributeBegin
+			AnimationFile "string filename" "blabla"
 			Material "plastic"
 				"color Kd" [ 1.0 1.0 1.0 ]
 				"color Ks" [ 0.5 0.5 0.5 ]

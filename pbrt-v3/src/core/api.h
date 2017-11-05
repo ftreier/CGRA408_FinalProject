@@ -91,6 +91,7 @@ void pbrtWorldEnd();
 void cgraScenePhoto(const ParamSet params);
 void cgraSynthSceneBegin();
 void cgraSynthSceneEnd();
+void cgraAnimation(const ParamSet params);
 
 }  // namespace pbrt
 

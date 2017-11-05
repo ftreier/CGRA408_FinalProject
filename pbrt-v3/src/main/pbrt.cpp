@@ -67,6 +67,7 @@ Reformatting options:
   --toply              Print a reformatted version of the input file(s) to
 					   standard output and convert all triangle meshes to
 					   PLY files. Does not render an image.
+  --framenumber <num>  The number of the frame to render.
 )");
 }
 
@@ -117,11 +118,17 @@ int main(int argc, char *argv[]) {
 				usage("missing value after --v argument");
 			FLAGS_v = atoi(argv[++i]);
 		} else if (!strncmp(argv[i], "--v=", 4)) {
-		  FLAGS_v = atoi(argv[i] + 4);
+			FLAGS_v = atoi(argv[i] + 4);
 		}
-		else if (!strcmp(argv[i], "--logtostderr")) {
-		  FLAGS_logtostderr = true;
-		} else if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-help") ||
+		else if (!strcmp(argv[i], "--fn") || !strcmp(argv[i], "-framenumber"))
+		{
+			options.frameNumber = atoi(argv[++i]);
+		}
+		else if (!strcmp(argv[i], "--logtostderr"))
+		{
+			FLAGS_logtostderr = true;
+		}
+		else if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-help") ||
 				   !strcmp(argv[i], "-h")) {
 			usage();
 			return 0;
