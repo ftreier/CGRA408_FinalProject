@@ -4,7 +4,7 @@
 	Rotate 0.000000 0 1 0
 	Rotate 0.000000 0 0 1
 2
-	Translate 2 2 2
-	Rotate 0.000000 1 0 0
+	Translate -2 0 5
+	Rotate 45.000000 1 0 0
 	Rotate 0.000000 0 1 0
 	Rotate 0.000000 0 0 1

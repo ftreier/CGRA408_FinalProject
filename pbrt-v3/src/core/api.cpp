@@ -1701,7 +1701,7 @@ void cgraSynthSceneEnd()
 void cgraAnimation(const ParamSet params)
 {
 	string file = params.FindOneFilename("filename", "");
-	if(file.empty())
+	if(file.empty() || PbrtOptions.frameNumber == 0)
 	{
 		return;
 	}
