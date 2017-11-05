@@ -116,6 +116,9 @@
 #include <map>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <iostream>
+#include <fstream>
+#include "ext/stringExtensions.h"
 
 using namespace std;
 
@@ -1697,7 +1700,70 @@ void cgraSynthSceneEnd()
 
 void cgraAnimation(const ParamSet params)
 {
-	
+	string file = params.FindOneFilename("filename", "");
+	if(file.empty())
+	{
+		return;
+	}
+
+	string line;
+	ifstream myfile(file);
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			if(line[0] == '\t' || line[0] == ' ')
+			{
+				continue;
+			}
+
+			try
+			{
+				int index = stoi(line);
+				if (index == PbrtOptions.frameNumber)
+				{
+					while(getline(myfile, line))
+					{
+						if (line[0] != '\t' && line[0] != ' ')
+						{
+							return;
+						}
+
+						trim(line);
+
+						if(line.empty())
+						{
+							continue;
+						}
+
+						vector<string> parts = splitString(line, " ");
+						if(parts[0].compare("Translate") == 0)
+						{
+							pbrtTranslate(stof(parts[1]), stof(parts[2]), stof(parts[3]));
+						}
+						else if(parts[0].compare("Rotate") == 0)
+						{
+							pbrtRotate(stof(parts[1]), stof(parts[2]), stof(parts[3]), stof(parts[4]));
+						}
+						else
+						{
+							cout << "not supported command(" << parts[0] << ") found in animation file.";
+						}
+					}
+				}
+			}
+			catch(exception)
+			{
+				cout << "unexpected tolken found in animation file.";
+			}
+		}
+
+		myfile.close();
+	}
+	else
+	{
+		cout << "Unable to open animation file.";
+	}
 }
 
 Scene *RenderOptions::MakeScene(bool includeLocal, bool includeSynth)
