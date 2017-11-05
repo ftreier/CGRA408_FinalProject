@@ -1487,6 +1487,12 @@ void differentialRendering()
 	string extension = filename.substr(filename.find_last_of('.'));
 	//transform(extension.begin(), extension.end(), extension.begin(), tolower);
 
+	double tolerance = 0.01;
+	if(extension.compare(".png") == 0)
+	{
+		tolerance = 0.04;
+	}
+
 	string bgFile = renderOptions->_differentialBg.FindOneFilename("filename", "");
 	if (bgFile.empty())
 	{
@@ -1557,7 +1563,7 @@ void differentialRendering()
 					 abs(synthetic[_noOfChannels * i + 1] - environment[_noOfChannels * i + 1]) +
 					 abs(synthetic[_noOfChannels * i + 2] - environment[_noOfChannels * i + 2]);
 
-		diff = diff > 0.01 ? 1 : 0;
+		diff = diff > tolerance ? 1 : 0;
 		printMask[_noOfChannels * i + 0] = printMask[_noOfChannels * i + 1] = printMask[_noOfChannels * i + 2] = diff;
 
 		float notDiff = 1 - diff;
