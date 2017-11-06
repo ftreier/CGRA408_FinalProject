@@ -65,12 +65,17 @@ def export_selected():
         translate = cmds.getAttr(triangle_mesh + ".translate")[0]
         rotate = cmds.getAttr(triangle_mesh + ".rotate")[0]
         scale = cmds.getAttr(triangle_mesh + ".scale")[0]
+        matrix = cmds.xform(triangle_mesh, query=True, matrix=True)
 
-        file.write("Translate {0:.6f} {1:.6f} {2:.6f}\n".format(translate[0], translate[1], translate[2]))
-        file.write("Rotate {0:.6f} 1 0 0\n".format(-rotate[1]))
-        file.write("Rotate {0:.6f} 0 1 0\n".format(rotate[0]))
-        file.write("Rotate {0:.6f} 0 0 1\n".format(rotate[2]))
-        file.write("Scale {0:.6f} {1:.6f} {2:.6f}\n".format(scale[0], scale[1], scale[2]))
+        for m in range(0, len(matrix)):
+            matrix[m] = round(matrix[m], 6)
+
+        # file.write("Translate {0:.6f} {1:.6f} {2:.6f}\n".format(translate[0], translate[1], translate[2]))
+        # file.write("Rotate {0:.6f} 1 0 0\n".format(-rotate[1]))
+        # file.write("Rotate {0:.6f} 0 1 0\n".format(rotate[0]))
+        # file.write("Rotate {0:.6f} 0 0 1\n".format(rotate[2]))
+        # file.write("Scale {0:.6f} {1:.6f} {2:.6f}\n".format(scale[0], scale[1], scale[2]))
+        file.write("ConcatTransform [{0}]\n".format(" ".join(map(str, matrix))))
 
         # Write vertex indices, positions and normals per face
         vertex_indices_string = " ".join(map(str, face_vertex_indices))
