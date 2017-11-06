@@ -2,13 +2,15 @@ Film "image"
   "integer xresolution" [ 2400 ]
   "integer yresolution" [ 1600 ]
   "string filename" [ "test.exr" ]
-PixelFilter "box"
+PixelFilter "mitchell"
 LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
+
+Integrator "path" "integer maxdepth" [ 5 ]
 
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "halton" "integer pixelsamples" [ 32 ]
+Sampler "halton" "integer pixelsamples" [ 64 ]
 
 WorldBegin
 
@@ -54,24 +56,29 @@ WorldBegin
 
 		MakeNamedMaterial "conePlastic"
 			"string type" "mix"
-			"color amount" [ 0.2 0.2 0.2 ]
+			"color amount" [ 0.725 0.725 0.725 ]
 			"string namedmaterial1" "coneA"
 			"string namedmaterial2" "coneB"
 
 		AttributeBegin
+			Translate 0.0 0.005 0.0
 			Material "plastic"
-				"color Kd" [ 1.0 1.0 1.0 ]
-				"color Ks" [ 0.75 0.75 0.75 ]
-				"float roughness" [ 0.2 ]
+				"color Kd" [ 0.8750 0.9028 0.9497 ]
+				"color Ks" [ 0.85 0.85 0.85 ]
+				"float roughness" [ 0.1 ]
 			Include "ball.pbrt"
 		AttributeEnd
 
 		AttributeBegin
+			Translate 0.0 0.0075 0.0
+			Scale 0.9 0.9 0.9
 			NamedMaterial "conePlastic"
 			Include "cone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
+			Translate 0.0 0.0075 0.0
+			Scale 0.9 0.9 0.9
 			NamedMaterial "conePlastic"
 			Include "coneTest.pbrt"
 		AttributeEnd
