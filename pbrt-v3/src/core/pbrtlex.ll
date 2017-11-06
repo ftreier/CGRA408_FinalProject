@@ -170,6 +170,7 @@ WorldEnd                { return WORLDEND; }
 ScenePhoto              { return SCENEPHOTO; }
 SynthSceneBegin         { return SYNTHSCENEBEGIN; }
 SynthSceneEnd           { return SYNTHSCENEEND; }
+AnimationFile           { return ANIMATIONFILE; }
 {WHITESPACE} /* do nothing */
 \n { pbrt::line_num++; }
 {NUMBER} {

@@ -177,6 +177,7 @@ pbrt::ParamArray *ribarray;
 %token INTEGRATOR TEXTURE TRANSFORMBEGIN TRANSFORMEND TRANSFORMTIMES
 %token TRANSFORM TRANSLATE WORLDBEGIN WORLDEND
 %token SCENEPHOTO SYNTHSCENEBEGIN SYNTHSCENEEND
+%token ANIMATIONFILE
 
 %token HIGH_PRECEDENCE
 
@@ -662,6 +663,13 @@ pbrt_stmt: ACCELERATOR STRING paramlist
     pbrt::cgraSynthSceneEnd();
 };
 
+| ANIMATIONFILE paramlist
+{
+    pbrt::ParamSet params;
+    pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
+    pbrt::cgraAnimation(params);
+    pbrt::FreeArgs();
+};
 
 %%
 

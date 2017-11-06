@@ -62,6 +62,7 @@ WorldBegin
 
 		AttributeBegin
 			Translate 0.0 0.005 0.0
+			AnimationFile "string filename" "blabla"
 			Material "plastic"
 				"color Kd" [ 0.8750 0.9028 0.9497 ]
 				"color Ks" [ 0.85 0.85 0.85 ]

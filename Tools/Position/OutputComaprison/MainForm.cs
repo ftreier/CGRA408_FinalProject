@@ -12,6 +12,8 @@ namespace OutputComaprison
 {
 	public partial class MainForm : Form
 	{
+		#region fields
+
 		private readonly List<ImageBox> _imageBoxes;
 		private readonly HashSet<DockableToolWindow> _updatingSize;
 		private readonly Dictionary<string, zDockMode> _imageNames;
@@ -19,6 +21,11 @@ namespace OutputComaprison
 
 		private string _pbrtPath;
 		private string _baseImgPath;
+		//private int _frameNumber = 0;
+
+		#endregion
+
+		#region Properties
 
 		public string PbrtPath
 		{
@@ -32,6 +39,10 @@ namespace OutputComaprison
 				}
 			}
 		}
+
+		#endregion
+
+		#region constructor
 
 		public MainForm()
 		{
@@ -52,6 +63,8 @@ namespace OutputComaprison
 
 			_dockContainer.BottomPanelHeight = 400;
 		}
+
+		#endregion
 
 		#region Create Windows
 
@@ -166,8 +179,8 @@ namespace OutputComaprison
 			UpdateBaseImgPath();
 
 			CreateSceneEditor();
-
-			//PbrtPath = Settings.Default.PBRTPath;
+			
+			_fnTb.Text = Settings.Default.FrameNumber.ToString();
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -175,6 +188,9 @@ namespace OutputComaprison
 			Settings.Default.ImageBasePath = _baseImgPath;
 			Settings.Default.PBRTPath = _pbrtPath;
 			Settings.Default.PbrtSceneFile = _editor.SceneFile;
+			int fn;
+			int.TryParse(_fnTb.Text, out fn);
+			fn = Settings.Default.FrameNumber;
 			Settings.Default.Save();
 		}
 
@@ -237,13 +253,42 @@ namespace OutputComaprison
 				return;
 			}
 
+			int fn;
+			if (!int.TryParse(_fnTb.Text, out fn))
+			{
+				if (MessageBox.Show(
+					    @"The provided frame number can not be parsed. Would you like to continue with rendering the default frame?",
+					    @"Not a number",
+					    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+				{
+					return;
+				}
+
+				fn = 0;
+			}
+
 			_editor.Save();
-			string command = $"/C {PbrtPath} {_editor.SceneFile}";
+			string command = $"/C {PbrtPath} {_editor.SceneFile} --fn {fn}";
 			var pi = new ProcessStartInfo("cmd.exe", command) { WorkingDirectory = _baseImgPath };
 			var p = Process.Start(pi);
 			p.WaitForExit();
 
 			ReloadImages();
+		}
+
+		private void _fnTb_TextChanged(object sender, EventArgs e)
+		{
+			int fn;
+			if (int.TryParse(_fnTb.Text, out fn))
+			{
+				_fnTb.ForeColor = Color.Black;
+				_fnLbl.ForeColor = Color.Black;
+			}
+			else
+			{
+				_fnTb.ForeColor = Color.Red;
+				_fnLbl.ForeColor = Color.Red;
+			}
 		}
 
 		#endregion
