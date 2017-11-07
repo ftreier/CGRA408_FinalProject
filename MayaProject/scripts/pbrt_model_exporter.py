@@ -3,6 +3,7 @@ import maya.cmds as cmds
 
 #file_path = "/home/purvisjack/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
 file_path = "D:/Documents/Victoria/2017/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
+include_animations = True
 
 
 def export_selected():
@@ -71,12 +72,17 @@ def export_mesh(selected_mesh, parent_name=None):
         # Get the vertex normal for this vertex
         cmds.select(triangle_mesh + ".vtx[" + str(v) + "]")
         all_vertex_normals = cmds.polyNormalPerVertex(query=True, xyz=True)
+
+        # Naive handling of variable number of vertex normals
         if len(all_vertex_normals) >= 12:
             vertex_normal_x = (all_vertex_normals[0] + all_vertex_normals[3] + all_vertex_normals[6] + all_vertex_normals[9]) / 4
             vertex_normal_y = (all_vertex_normals[1] + all_vertex_normals[4] + all_vertex_normals[7] + all_vertex_normals[10]) / 4
             vertex_normal_z = (all_vertex_normals[2] + all_vertex_normals[5] + all_vertex_normals[8] + all_vertex_normals[11]) / 4
+        elif 3 <= len(all_vertex_normals) < 12:
+            vertex_normal_x = all_vertex_normals[0]
+            vertex_normal_y = all_vertex_normals[1]
+            vertex_normal_z = all_vertex_normals[2]
         else:
-            # Naive handling of vertices with less than 4 vertex normals
             vertex_normal_x = 0.0
             vertex_normal_y = 0.0
             vertex_normal_z = 0.0
@@ -100,22 +106,16 @@ def export_mesh(selected_mesh, parent_name=None):
     else:
         file_name = file_name + selected_mesh + ".pbrt"
 
+    # Write transforms to animation file if enabled
+    if include_animations:
+        export_animations(selected_mesh, parent_name)
+
     # Write the mesh data to a pbrt file
     with open(file_name, "w") as file:
-
-        # Write parent transform if object has a transform parent
-        parents = cmds.listRelatives(selected_mesh, parent=True, type="transform")
-        if len(parents) > 0:
-            matrix = cmds.xform(parents[0], query=True, matrix=True)
-            for m in range(0, len(matrix)):
-                matrix[m] = round(matrix[m], 6)
-            file.write("ConcatTransform [{0}]\n".format(" ".join(map(str, matrix))))
-
-        # Write object transform
-        matrix = cmds.xform(triangle_mesh, query=True, matrix=True)
-        for m in range(0, len(matrix)):
-            matrix[m] = round(matrix[m], 6)
-        file.write("ConcatTransform [{0}]\n\n".format(" ".join(map(str, matrix))))
+        if include_animations:
+            file.write("AnimationFile \"string filename\" \"" + selected_mesh + ".animation\"\n\n")
+        else:
+            file.write(get_current_transform(selected_mesh))
 
         # Write vertex indices, positions and normals per face
         vertex_indices_string = " ".join(map(str, face_vertex_indices))
@@ -124,10 +124,52 @@ def export_mesh(selected_mesh, parent_name=None):
         vertex_uv_string = " ".join(map(str, vertex_uvs))
         file.write("Shape \"trianglemesh\"\n\t\"integer indices\" [{0}]\n\t\"point P\" [{1}]\n\t\"normal N\" [{2}]\n\t\"float uv\" [{3}]\n".format(vertex_indices_string, vertex_position_string, vertex_normal_string, vertex_uv_string))
 
-
     # Destory the duplicate triangle mesh
     cmds.select(triangle_mesh)
     cmds.delete()
+
+
+def export_animations(selected_mesh, parent_name=None):
+    start_frame = 1
+    end_frame = 10
+
+    # If the object is part of a group it should be stored in a sub-directory of the parent name
+    file_name = file_path
+    if parent_name != None:
+        file_name = file_name + parent_name + "/" + selected_mesh + ".animation"
+    else:
+        file_name = file_name + selected_mesh + ".animation"
+
+    with open(file_name, "w") as file:
+        for frame in range(start_frame, end_frame + 1):
+            cmds.currentTime(frame, update=True)
+
+            file.write(str(frame) + "\n")
+            file.write(get_current_transform(selected_mesh))
+
+    cmds.currentTime(1)
+
+
+def get_current_transform(selected_mesh):
+    string = ""
+
+    # Write parent transform if object has a transform parent
+    parents = cmds.listRelatives(selected_mesh, parent=True, type="transform")
+    if len(parents) > 0:
+        matrix = cmds.xform(parents[0], query=True, matrix=True)
+        for m in range(0, len(matrix)):
+            matrix[m] = round(matrix[m], 6)
+
+        string += "\tConcatTransform [{0}]\n".format(" ".join(map(str, matrix)))
+
+    # Write object transform
+    matrix = cmds.xform(selected_mesh, query=True, matrix=True)
+    for m in range(0, len(matrix)):
+        matrix[m] = round(matrix[m], 6)
+
+    string += "\tConcatTransform [{0}]\n".format(" ".join(map(str, matrix)))
+
+    return string
 
 
 if __name__ == '__main__':

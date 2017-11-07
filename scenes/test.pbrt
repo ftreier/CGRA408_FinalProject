@@ -10,7 +10,7 @@ LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "sobol" "integer pixelsamples" [ 32 ]
+Sampler "sobol" "integer pixelsamples" [ 4 ]
 
 WorldBegin
 
@@ -72,17 +72,7 @@ WorldBegin
 
 		AttributeBegin
 			NamedMaterial "ballPlastic"
-			Material "disney"
-				"color color" [ 0.8750 0.9028 0.9497 ]
-				"float spectrans" [ 0.5 ]
-				"float speculartint" [ 1.0 ]
-				#"float roughness" [ 0.5 ]
 			Include "ball.pbrt"
-		AttributeEnd
-
-		AttributeBegin
-			NamedMaterial "ballPlastic"
-			Include "ball2.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -92,31 +82,12 @@ WorldBegin
 
 		AttributeBegin
 			NamedMaterial "conePlastic"
-			Include "cone2.pbrt"
-		AttributeEnd
-
-		AttributeBegin
-			NamedMaterial "conePlastic"
-			Material "disney"
-				"color color" [ 0.969 0.316 0.07 ]
-				"float spectrans" [ 0.5 ]
-				"float speculartint" [ 0.0 ]
-				#"float roughness" [ 0.5 ]
-				"bool thin" "true"
-			Include "coneTest.pbrt"
-		AttributeEnd
-
-		AttributeBegin
-			NamedMaterial "conePlastic"
 			Include "brokenCone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
-			Material "plastic"
-				"color Kd" [ 1.0 0.8941 0.0 ]
-				"color Ks" [ 1.0 1.0 1.0 ]
-				"float roughness" [ 0.5 ]
-			Include "hockeyStickHandle.pbrt"
+			NamedMaterial "conePlastic"
+			Include "cone2.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -128,6 +99,35 @@ WorldBegin
 				"color Ks" [ 1.0 1.0 1.0 ]
 				"float roughness" [ 0.5 ]
 			Include "hockeyStick.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			Material "plastic"
+				"color Kd" [ 1.0 0.8941 0.0 ]
+				"color Ks" [ 1.0 1.0 1.0 ]
+				"float roughness" [ 0.5 ]
+			Include "hockeyStickHandle.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			NamedMaterial "ballPlastic"
+			Material "disney"
+				"color color" [ 0.8750 0.9028 0.9497 ]
+				"float spectrans" [ 0.5 ]
+				"float speculartint" [ 1.0 ]
+				#"float roughness" [ 0.5 ]
+			Include "ballTest.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			NamedMaterial "conePlastic"
+			Material "disney"
+				"color color" [ 0.969 0.316 0.07 ]
+				"float spectrans" [ 0.5 ]
+				"float speculartint" [ 0.0 ]
+				#"float roughness" [ 0.5 ]
+				"bool thin" "true"
+			Include "coneTest.pbrt"
 		AttributeEnd
 
 	SynthSceneEnd

@@ -12,6 +12,8 @@ def export_selected_animation():
         cmds.error("Please select an object!")
 
 
+
+
 if __name__ == '__main__':
     print("Begin animation export")
     export_selected_animation()
