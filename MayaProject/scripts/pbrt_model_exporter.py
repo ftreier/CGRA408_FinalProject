@@ -4,6 +4,8 @@ import maya.cmds as cmds
 #file_path = "/home/purvisjack/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
 file_path = "D:/Documents/Victoria/2017/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
 include_animations = True
+start_frame = 228
+end_frame = 360
 
 
 def export_selected():
@@ -11,7 +13,7 @@ def export_selected():
 
     # Check if the selected object is a group containing many child objects
     children = cmds.listRelatives(selected_mesh, type="transform")
-    if children != None and len(children) > 0:
+    if children is not None and len(children) > 0:
 
         # Export all the child objects
         for child in children:
@@ -101,7 +103,7 @@ def export_mesh(selected_mesh, parent_name=None):
 
     # If the object is part of a group it should be stored in a sub-directory of the parent name
     file_name = file_path
-    if parent_name != None:
+    if parent_name is not None:
         file_name = file_name + parent_name + "/" + selected_mesh + ".pbrt"
     else:
         file_name = file_name + selected_mesh + ".pbrt"
@@ -113,7 +115,10 @@ def export_mesh(selected_mesh, parent_name=None):
     # Write the mesh data to a pbrt file
     with open(file_name, "w") as file:
         if include_animations:
-            file.write("AnimationFile \"string filename\" \"" + selected_mesh + ".animation\"\n\n")
+            path = selected_mesh + ".animation"
+            if parent_name is not None:
+                path = parent_name + "/" + path
+            file.write("AnimationFile \"string filename\" \"" + path + "\"\n\n")
         else:
             file.write(get_current_transform(selected_mesh))
 
@@ -130,12 +135,10 @@ def export_mesh(selected_mesh, parent_name=None):
 
 
 def export_animations(selected_mesh, parent_name=None):
-    start_frame = 1
-    end_frame = 10
 
     # If the object is part of a group it should be stored in a sub-directory of the parent name
     file_name = file_path
-    if parent_name != None:
+    if parent_name is not None:
         file_name = file_name + parent_name + "/" + selected_mesh + ".animation"
     else:
         file_name = file_name + selected_mesh + ".animation"
