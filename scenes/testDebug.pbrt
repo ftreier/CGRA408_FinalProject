@@ -15,7 +15,7 @@ WorldBegin
 
 	# distand scene
 	AttributeBegin
-		AnimationFile "string filename" "blabla"
+		AnimationFile "string filename" "testAnimation.txt"
 		Rotate -90 1 0 0
 		LightSource "infinite" 
 				"string mapname" [ "doge2_latlongDebug.png" ] 
@@ -43,9 +43,8 @@ WorldBegin
 		AttributeBegin
 			Material "kdsubsurface" "color Kd" [ .6 .6 .7]
 
-			Translate -2 2 2
-			Scale 0.75 0.75 0.75
-			Shape "sphere" "float radius" [2]
+			Include "cone.pbrt"
+			#Shape "sphere" "float radius" [2]
 			#Include "teapot.pbrt"
 		AttributeEnd
 	SynthSceneEnd

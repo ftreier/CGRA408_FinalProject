@@ -7,21 +7,36 @@
 
 using namespace std;
 
-static inline void ltrim(string &s) {
-	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
-		return !isspace(ch);
-	}));
+static inline void ltrim(string &s, char c)
+{
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [&](int ch) { return ch != c; }));
+}
+
+static inline void ltrim(string &s)
+{
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) { return !isspace(ch); }));
+}
+
+static inline void rtrim(string &s, char c)
+{
+	s.erase(std::find_if(s.rbegin(), s.rend(), [&](int ch) { return ch != c; }).base(), s.end());
 }
 
 // trim from end (in place)
-static inline void rtrim(string &s) {
-	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
-		return !isspace(ch);
-	}).base(), s.end());
+static inline void rtrim(string &s)
+{
+	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) { return !isspace(ch); }).base(), s.end());
+}
+
+static inline void trim(string &s, char c)
+{
+	ltrim(s, c);
+	rtrim(s, c);
 }
 
 // trim from both ends (in place)
-static inline void trim(string &s) {
+static inline void trim(string &s)
+{
 	ltrim(s);
 	rtrim(s);
 }
