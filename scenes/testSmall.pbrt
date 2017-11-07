@@ -57,14 +57,13 @@ WorldBegin
 			"color amount" [ 0.2 0.2 0.2 ]
 			"string namedmaterial1" "coneA"
 			"string namedmaterial2" "coneB"
-
 		AttributeBegin
-			AnimationFile "string filename" "blabla"
+			#AnimationFile "string filename" "blabla"
 			Material "plastic"
 				"color Kd" [ 1.0 1.0 1.0 ]
 				"color Ks" [ 0.75 0.75 0.75 ]
 				"float roughness" [ 0.2 ]
-			Include "ball.pbrt"
+			#Include "ball.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -75,7 +74,7 @@ WorldBegin
 		AttributeBegin
 			#Translate 2 0 2
 			NamedMaterial "conePlastic"
-			Include "coneTest.pbrt"
+			#Include "coneTest.pbrt"
 		AttributeEnd
 
 		AttributeBegin

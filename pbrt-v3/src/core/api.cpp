@@ -1818,7 +1818,23 @@ void cgraAnimation(const ParamSet params)
 						}
 
 						vector<string> parts = splitString(line, " ");
-						if(parts[0].compare("Translate") == 0)
+
+						if(parts[0].compare("ConcatTransform") == 0)
+						{
+							int count = 16;
+							float *transform = new float[count];
+
+							for(int i = 0; i < count; i++)
+							{
+								string t = parts[i + 1];
+								trim(t, '[');
+								trim(t, ']');
+								transform[i] = stof(t);
+							}
+
+							pbrtConcatTransform(transform);
+						}
+						else if(parts[0].compare("Translate") == 0)
 						{
 							pbrtTranslate(stof(parts[1]), stof(parts[2]), stof(parts[3]));
 						}
@@ -1833,9 +1849,9 @@ void cgraAnimation(const ParamSet params)
 					}
 				}
 			}
-			catch(exception)
+			catch(exception e)
 			{
-				cout << "unexpected tolken found in animation file.";
+				cout << "unexpected tolken found in animation file." << endl;
 			}
 		}
 
@@ -1843,7 +1859,7 @@ void cgraAnimation(const ParamSet params)
 	}
 	else
 	{
-		cout << "Unable to open animation file.";
+		cout << "Unable to open animation file." << endl;
 	}
 }
 
