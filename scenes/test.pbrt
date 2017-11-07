@@ -10,7 +10,7 @@ LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "sobol" "integer pixelsamples" [ 16 ]
+Sampler "sobol" "integer pixelsamples" [ 4 ]
 
 WorldBegin
 
@@ -32,6 +32,7 @@ WorldBegin
 
 	# local scene
 	AttributeBegin
+		Scale 2 2 2
 		Material "matte"
 			"rgb Kd" [ 0.5 0.5 0.5 ]
 
@@ -86,7 +87,7 @@ WorldBegin
 
 		AttributeBegin
 			NamedMaterial "conePlastic"
-			Include "cone.pbrt"
+			#Include "cone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -103,6 +104,11 @@ WorldBegin
 				#"float roughness" [ 0.5 ]
 				"bool thin" "true"
 			Include "coneTest.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			NamedMaterial "conePlastic"
+			Include "brokenCone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
