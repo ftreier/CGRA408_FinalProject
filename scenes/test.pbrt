@@ -2,7 +2,7 @@ Film "image"
   "integer xresolution" [ 1920 ]
   "integer yresolution" [ 1080 ]
   "string filename" [ "test.exr" ]
-PixelFilter "box"
+PixelFilter "mitchell"
 LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 
 #Integrator "directlighting"
@@ -18,9 +18,9 @@ WorldBegin
 	AttributeBegin
 		Rotate -90 1 0 0
 		Rotate 200 0 0 1
-		Scale 2.0 2.0 2.0
+		Scale 2 2 2
 		LightSource "infinite"
-			"string mapname" [ "env_map_medium_debug.exr" ]
+			"string mapname" [ "env_map_medium.exr" ]
 			"rgb L" [ 1.0 1.0 1.0 ]
 	AttributeEnd
 
@@ -32,6 +32,7 @@ WorldBegin
 
 	# local scene
 	AttributeBegin
+		Scale 2 2 2
 		Material "matte"
 			"rgb Kd" [ 0.5 0.5 0.5 ]
 
@@ -42,6 +43,12 @@ WorldBegin
 
 	# synthetic objects
 	SynthSceneBegin
+
+		MakeNamedMaterial "ballPlastic"
+				"string type" "plastic"
+				"color Kd" [ 0.8750 0.9028 0.9497 ]
+				"color Ks" [ 0.75 0.75 0.75 ]
+				"float roughness" [ 0.5 ]
 
 		MakeNamedMaterial "coneA"
 			"string type" "plastic"
@@ -64,17 +71,23 @@ WorldBegin
 			"string namedmaterial2" "coneB"
 
 		AttributeBegin
-			#AnimationFile "string filename" "blabla"
-			Material "plastic"
-				"color Kd" [ 0.8750 0.9028 0.9497 ]
-				"color Ks" [ 0.75 0.75 0.75 ]
-				"float roughness" [ 0.5 ]
+			NamedMaterial "ballPlastic"
+			Material "disney"
+				"color color" [ 0.8750 0.9028 0.9497 ]
+				"float spectrans" [ 0.5 ]
+				"float speculartint" [ 1.0 ]
+				#"float roughness" [ 0.5 ]
 			Include "ball.pbrt"
 		AttributeEnd
 
 		AttributeBegin
+			NamedMaterial "ballPlastic"
+			Include "ball2.pbrt"
+		AttributeEnd
+
+		AttributeBegin
 			NamedMaterial "conePlastic"
-			Include "cone.pbrt"
+			#Include "cone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -84,7 +97,18 @@ WorldBegin
 
 		AttributeBegin
 			NamedMaterial "conePlastic"
+			Material "disney"
+				"color color" [ 0.969 0.316 0.07 ]
+				"float spectrans" [ 0.5 ]
+				"float speculartint" [ 0.0 ]
+				#"float roughness" [ 0.5 ]
+				"bool thin" "true"
 			Include "coneTest.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			NamedMaterial "conePlastic"
+			Include "brokenCone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -98,23 +122,12 @@ WorldBegin
 		AttributeBegin
 			Texture "stickTexture" "spectrum" "imagemap"
 				"string filename" "stick_texture.png"
+				"string	wrap" "clamp"
 			Material "plastic"
 				"texture Kd" "stickTexture"
 				"color Ks" [ 1.0 1.0 1.0 ]
 				"float roughness" [ 0.5 ]
 			Include "hockeyStick.pbrt"
-		AttributeEnd
-
-		AttributeBegin
-			Material "matte"
-				"color Kd" [ 0.5 0.5 0.5 ]
-			#Include "plane.pbrt"
-		AttributeEnd
-
-		AttributeBegin
-			Material "mirror"
-			Translate 0 4 0
-			#Shape "sphere" "float radius" [6]
 		AttributeEnd
 
 	SynthSceneEnd
