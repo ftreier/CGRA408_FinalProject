@@ -1,8 +1,8 @@
 import maya.cmds as cmds
 
 
-file_path = "/home/purvisjack/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
-#file_path = "D:/Documents/Victoria/2017/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
+#file_path = "/home/purvisjack/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
+file_path = "D:/Documents/Victoria/2017/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
 
 
 def export_selected():
@@ -39,6 +39,7 @@ def export_selected():
     # Get the vertex positions
     vertex_positions = cmds.xform(triangle_mesh + ".vtx[0:" + str(num_vertices) + "]", query=True, objectSpace=True, translation=True)
     vertex_normals = []
+    vertex_uvs = []
 
     for v in range(0, num_vertices):
 
@@ -58,25 +59,28 @@ def export_selected():
         vertex_normals.append(round(vertex_normal_y, 6))
         vertex_normals.append(round(vertex_normal_z, 6))
 
+        # Get the UV co-ordinates for this vertex
+        uv_index = cmds.polyListComponentConversion(triangle_mesh + ".vtx[" + str(v) + "]", fromVertex=True, toUV=True)[0]
+        cmds.select(uv_index)
+        uv = cmds.polyEditUV(query=True)
+        vertex_uvs.append(round(uv[0], 6))
+        vertex_uvs.append(round(uv[1], 6))
+
     # Write the mesh data to a pbrt file
     with open(file_path + selected_mesh + ".pbrt", "w") as file:
 
         # Write object transform
-        translate = cmds.getAttr(triangle_mesh + ".translate")[0]
-        rotate = cmds.getAttr(triangle_mesh + ".rotate")[0]
-        scale = cmds.getAttr(triangle_mesh + ".scale")[0]
-
-        file.write("Translate {0:.6f} {1:.6f} {2:.6f}\n".format(translate[0], translate[1], translate[2]))
-        file.write("Rotate {0:.6f} 1 0 0\n".format(rotate[0]))
-        file.write("Rotate {0:.6f} 0 1 0\n".format(rotate[1]))
-        file.write("Rotate {0:.6f} 0 0 1\n".format(rotate[2]))
-        file.write("Scale {0:.6f} {1:.6f} {2:.6f}\n".format(scale[0], scale[1], scale[2]))
+        matrix = cmds.xform(triangle_mesh, query=True, matrix=True)
+        for m in range(0, len(matrix)):
+            matrix[m] = round(matrix[m], 6)
+        file.write("ConcatTransform [{0}]\n".format(" ".join(map(str, matrix))))
 
         # Write vertex indices, positions and normals per face
         vertex_indices_string = " ".join(map(str, face_vertex_indices))
         vertex_position_string = " ".join(map(str, vertex_positions))
         vertex_normal_string = " ".join(map(str, vertex_normals))
-        file.write("Shape \"trianglemesh\"  \"integer indices\" [{0}] \"point P\" [{1}] \"normal N\" [{2}]\n".format(vertex_indices_string, vertex_position_string, vertex_normal_string))
+        vertex_uv_string = " ".join(map(str, vertex_uvs))
+        file.write("Shape \"trianglemesh\"\n\"integer indices\" [{0}]\n\"point P\" [{1}]\n\"normal N\" [{2}]\n\"float uv\" [{3}]\n".format(vertex_indices_string, vertex_position_string, vertex_normal_string, vertex_uv_string))
 
 
     # Destory the duplicate triangle mesh

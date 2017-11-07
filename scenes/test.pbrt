@@ -1,14 +1,16 @@
 Film "image"
-  "integer xresolution" [ 2400 ]
-  "integer yresolution" [ 1600 ]
+  "integer xresolution" [ 1920 ]
+  "integer yresolution" [ 1080 ]
   "string filename" [ "test.exr" ]
 PixelFilter "box"
 LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 
+#Integrator "directlighting"
+
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "halton" "integer pixelsamples" [ 32 ]
+Sampler "sobol" "integer pixelsamples" [ 32 ]
 
 WorldBegin
 
@@ -18,17 +20,20 @@ WorldBegin
 		Rotate 200 0 0 1
 		Scale 2.0 2.0 2.0
 		LightSource "infinite"
-			"string mapname" [ "env_map_small.exr" ]
+			"string mapname" [ "env_map_medium_debug.exr" ]
 			"rgb L" [ 1.0 1.0 1.0 ]
 	AttributeEnd
 
 	# scene photo
-	ScenePhoto "string filename" "background_medium.png"
+	ScenePhoto "string filename" "background.png"
+
+	# Adjust transform to match Maya scene
+	Scale 1 1 -1
 
 	# local scene
 	AttributeBegin
-		Material "substrate"
-			"rgb Kd" [ 1.0 1.0 1.0 ]
+		Material "matte"
+			"rgb Kd" [ 0.5 0.5 0.5 ]
 
 		Shape "trianglemesh"
 			"integer indices" [ 0 1 2 0 3 2 ]
@@ -49,21 +54,21 @@ WorldBegin
 			"color Kd" [ 0.969 0.316 0.07 ]
 			"color Ks" [ 1.0 1.0 1.0 ]
 			"float roughness" [ 0.05 ]
-			"color reflect" [ 0.0 0.0 0.0 ]
+			"color reflect" [ 1.0 1.0 1.0 ]
 			"color transmit" [ 1.0 1.0 1.0 ]
 
 		MakeNamedMaterial "conePlastic"
 			"string type" "mix"
-			"color amount" [ 0.2 0.2 0.2 ]
+			"color amount" [ 0.75 0.75 0.75 ]
 			"string namedmaterial1" "coneA"
 			"string namedmaterial2" "coneB"
 
 		AttributeBegin
-			AnimationFile "string filename" "blabla"
+			#AnimationFile "string filename" "blabla"
 			Material "plastic"
-				"color Kd" [ 1.0 1.0 1.0 ]
+				"color Kd" [ 0.8750 0.9028 0.9497 ]
 				"color Ks" [ 0.75 0.75 0.75 ]
-				"float roughness" [ 0.2 ]
+				"float roughness" [ 0.5 ]
 			Include "ball.pbrt"
 		AttributeEnd
 
@@ -74,7 +79,30 @@ WorldBegin
 
 		AttributeBegin
 			NamedMaterial "conePlastic"
+			Include "cone2.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			NamedMaterial "conePlastic"
 			Include "coneTest.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			Material "plastic"
+				"color Kd" [ 1.0 0.8941 0.0 ]
+				"color Ks" [ 1.0 1.0 1.0 ]
+				"float roughness" [ 0.5 ]
+			Include "hockeyStickHandle.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			Texture "stickTexture" "spectrum" "imagemap"
+				"string filename" "stick_texture.png"
+			Material "plastic"
+				"texture Kd" "stickTexture"
+				"color Ks" [ 1.0 1.0 1.0 ]
+				"float roughness" [ 0.5 ]
+			Include "hockeyStick.pbrt"
 		AttributeEnd
 
 		AttributeBegin
