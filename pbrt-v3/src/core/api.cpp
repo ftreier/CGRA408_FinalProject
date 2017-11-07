@@ -1437,44 +1437,99 @@ void writeImg(const string &name, const string &extension, const Float *rgb, con
 	}
 }
 
-	void loadOrRenderImage(string name, string extension, int xRes, int yRes, Bounds2i bounds, float* buffer, bool inclLocal)
+void loadOrRenderImage(string name, string extension, int xRes, int yRes, Bounds2i bounds, float* buffer, bool inclLocal)
+{
+	bool imgLoaded = false;
+	auto filename = name + extension;
+	if(fileExists(filename))
 	{
-		bool imgLoaded = false;
-		auto filename = name + extension;
-		if(fileExists(filename))
-		{
-			Point2i size;
-			unique_ptr<RGBSpectrum[]> img = ReadImage(filename, &size);
+		Point2i size;
+		unique_ptr<RGBSpectrum[]> img = ReadImage(filename, &size);
 
-			if (size.x != xRes || size.y != yRes)
+		if (size.x != xRes || size.y != yRes)
+		{
+			cout << name << " scene file with wrong dimentins found. Deleting file " << filename << endl;
+			remove(filename.c_str());
+		}
+		else
+		{
+			cout << "Reusing " << name << " scene" << endl;
+
+			for (int i = 0; i < xRes * yRes; i++ )
 			{
-				cout << name << " scene file with wrong dimentins found. Deleting file " << filename << endl;
-				remove(filename.c_str());
+				float *rgb = new float[3];
+				img[i].ToRGB(rgb);
+				buffer[i * 3 + 0] = rgb[0];
+				buffer[i * 3 + 1] = rgb[1];
+				buffer[i * 3 + 2] = rgb[2];
+			}
+
+			imgLoaded = true;
+		}
+	}
+	
+	if(!imgLoaded)
+	{
+		cout << "Rendering " << name << " scene" << endl;
+		renderScene(buffer, inclLocal, false);
+		writeImg(name, extension, buffer, bounds, Point2i(xRes, yRes));
+	}
+}
+
+float ApplyFilter(float* image, float* filterMaks, int maskSize, int x, int y, int xRes)
+{
+	float result = 0;
+	for (int i = 0; i < maskSize; i++)
+	{
+		for (int j = 0; j < maskSize; j++)
+		{
+			result += image[_noOfChannels * ((x + i) * xRes + y + j)] * filterMaks[i * maskSize + j];
+		}
+	}
+
+	return result;
+}
+
+void smoothenMask(int xRes, int yRes, float* printMask, float* smoothenedMask)
+{
+	int enlargeBy = 1;
+	int enlargedxRes = (xRes + 2 * enlargeBy);
+	int enlargedyRes = (yRes + 2 * enlargeBy);
+	int enlargedPixels = enlargedxRes * enlargedyRes;
+	float *enlargedOriginal = new float[_noOfChannels * enlargedPixels];
+
+	// enlarge image
+	for (int i = 0; i < enlargedyRes; i++)
+	{
+		for (int j = 0; j < enlargedxRes; j++)
+		{
+			if (j < enlargeBy || i < enlargeBy || i >= yRes + enlargeBy || j >= xRes + enlargeBy)
+			{
+				enlargedOriginal[_noOfChannels * (i * enlargedxRes + j)] = 0;
 			}
 			else
 			{
-				cout << "Reusing " << name << " scene" << endl;
-
-				for (int i = 0; i < xRes * yRes; i++ )
-				{
-					float *rgb = new float[3];
-					img[i].ToRGB(rgb);
-					buffer[i * 3 + 0] = rgb[0];
-					buffer[i * 3 + 1] = rgb[1];
-					buffer[i * 3 + 2] = rgb[2];
-				}
-
-				imgLoaded = true;
+				enlargedOriginal[_noOfChannels * (i * enlargedxRes + j)] = printMask[_noOfChannels * ((i - enlargeBy) * (xRes)+j - enlargeBy)];
 			}
 		}
-	
-		if(!imgLoaded)
+	}
+
+	// Apply filter mask
+	float *filterMask = new float[9]{ 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f };
+	for(int i = 0; i < yRes; i++)
+	{
+		for (int j = 0; j < xRes; j++)
 		{
-			cout << "Rendering " << name << " scene" << endl;
-			renderScene(buffer, inclLocal, false);
-			writeImg(name, extension, buffer, bounds, Point2i(xRes, yRes));
+			float value = ApplyFilter(enlargedOriginal, filterMask, enlargeBy *2 + 1, i, j, enlargedxRes);
+			smoothenedMask[_noOfChannels * (i * xRes + j) + 0] = value;
+			smoothenedMask[_noOfChannels * (i * xRes + j) + 1] = value;
+			smoothenedMask[_noOfChannels * (i * xRes + j) + 2] = value;
 		}
 	}
+
+	delete[] enlargedOriginal;
+	delete[] filterMask;
+}
 
 void differentialRendering()
 {
@@ -1555,19 +1610,27 @@ void differentialRendering()
 	//writeImg("environment", extension, environment, bounds, size);
 
 	float *printMask = new float[bufferSize];
+	float *smoothenedMask = new float[bufferSize];
 	float *diffImg = new float[bufferSize];
 	float *fin = new float[bufferSize];
-	for(int i = 0; i < noOfPixels; i++)
+	for (int i = 0; i < noOfPixels; i++)
 	{
 		// calculate mask
 		float diff = abs(synthetic[_noOfChannels * i + 0] - environment[_noOfChannels * i + 0]) +
-					 abs(synthetic[_noOfChannels * i + 1] - environment[_noOfChannels * i + 1]) +
-					 abs(synthetic[_noOfChannels * i + 2] - environment[_noOfChannels * i + 2]);
+			abs(synthetic[_noOfChannels * i + 1] - environment[_noOfChannels * i + 1]) +
+			abs(synthetic[_noOfChannels * i + 2] - environment[_noOfChannels * i + 2]);
 
 		diff = diff > tolerance ? 1 : 0;
+		//printMask[i] = diff;
 		printMask[_noOfChannels * i + 0] = printMask[_noOfChannels * i + 1] = printMask[_noOfChannels * i + 2] = diff;
+	}
 
-		float notDiff = 1 - diff;
+	smoothenMask(xRes, yRes, printMask, smoothenedMask);
+
+	for (int i = 0; i < noOfPixels; i++)
+	{
+		float diff = smoothenedMask[_noOfChannels * i];
+		float notDiff = 1.0 - diff;
 
 		float changeR = (complete[_noOfChannels * i + 0] - local[_noOfChannels * i + 0]) * notDiff;
 		float changeG = (complete[_noOfChannels * i + 1] - local[_noOfChannels * i + 1]) * notDiff;
@@ -1585,6 +1648,10 @@ void differentialRendering()
 	}
 
 	writeImg("mask", extension, printMask, bounds, size);
+	//auto s2 = Point2i(enlargedxRes, enlargedyRes);
+	//auto b2 = Bounds2i({ 0, 0 }, s2);
+	//writeImg("mask_", extension, enlargedOriginal, b2, s2);
+	writeImg("smoothenedMask", extension, smoothenedMask, bounds, size);
 	writeImg("diff", extension, diffImg, bounds, size);
 	writeImg("final", extension, fin, bounds, size);
 
@@ -1623,6 +1690,7 @@ void differentialRendering()
 	delete[] environment;
 	//delete[] mask;
 	delete[] printMask;
+	delete[] smoothenedMask;
 	delete[] diffImg;
 	delete[] fin;
 }
