@@ -10,7 +10,7 @@ LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "sobol" "integer pixelsamples" [ 8 ]
+Sampler "sobol" "integer pixelsamples" [ 32 ]
 
 WorldBegin
 
@@ -64,7 +64,6 @@ WorldBegin
 			"string namedmaterial2" "coneB"
 
 		AttributeBegin
-			Translate 0.0 0.005 0.0
 			#AnimationFile "string filename" "blabla"
 			Material "plastic"
 				"color Kd" [ 0.8750 0.9028 0.9497 ]
@@ -74,24 +73,35 @@ WorldBegin
 		AttributeEnd
 
 		AttributeBegin
-			Translate 0.0 0.0075 0.0
-			Scale 0.95 0.95 0.95
 			NamedMaterial "conePlastic"
 			Include "cone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
-			Translate 0.0 0.0075 0.0
-			Scale 0.95 0.95 0.95
+			NamedMaterial "conePlastic"
+			Include "cone2.pbrt"
+		AttributeEnd
+
+		AttributeBegin
 			NamedMaterial "conePlastic"
 			Include "coneTest.pbrt"
 		AttributeEnd
 
 		AttributeBegin
 			Material "plastic"
-				"color Kd" [ 0.8159 0.8091 0.1823 ]
-				"color Ks" [ 0.75 0.75 0.75 ]
-				"float roughness" [ 0.05 ]
+				"color Kd" [ 1.0 0.8941 0.0 ]
+				"color Ks" [ 1.0 1.0 1.0 ]
+				"float roughness" [ 0.5 ]
+			Include "hockeyStickHandle.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			Texture "stickTexture" "spectrum" "imagemap"
+				"string filename" "stick_texture.png"
+			Material "plastic"
+				"texture Kd" "stickTexture"
+				"color Ks" [ 1.0 1.0 1.0 ]
+				"float roughness" [ 0.5 ]
 			Include "hockeyStick.pbrt"
 		AttributeEnd
 
