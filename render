@@ -1,13 +1,21 @@
 #!/bin/bash
 # Basic range in for loop
 
-rm -r *.exr
-rm -r *.png
+#rm -r *.exr
+#rm -r *.png
 
-for value in {1..227}
+for value in {1..360}
 do
-  ./build/pbrt ./scenes/test.pbrt --fn $value
+  echo Render frame $value \n 
+  if [ $value -le 227 ]
+  then
+    echo render normal scene \n
+    ./release/pbrt ./scenes/sceneA.pbrt --fn $value --tf 1 
+  else
+    echo render shattered cone \n
+    ./release/pbrt ./scenes/sceneA.pbrt --fn $value --tf 1 
+  fi
 done
 
 echo All done
- 
+
