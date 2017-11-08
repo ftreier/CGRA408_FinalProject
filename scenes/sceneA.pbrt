@@ -8,7 +8,7 @@ LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "sobol" "integer pixelsamples" [ 4 ]
+Sampler "sobol" "integer pixelsamples" [ 256 ]
 
 WorldBegin
 
@@ -102,7 +102,6 @@ WorldBegin
 		AttributeBegin
 			Material "disney"
         "color color" [ 0.954 0.791 0.2 ]
-        "color spectrans" [ 0.1 0.1 0.1 ]
         "float roughness" [ 0.2 ]
         "float speculartint" [ 0.8 ]
 			Include "models/hockeyStickHandle.pbrt"
