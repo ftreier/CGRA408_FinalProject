@@ -43,31 +43,11 @@ AttributeBegin
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment12.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment13.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment14.pbrt"
 AttributeEnd
 
 AttributeBegin
 	Include "brokenCone/coneFragment15.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment16.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment17.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment18.pbrt"
 AttributeEnd
 
 AttributeBegin
@@ -99,31 +79,11 @@ AttributeBegin
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment26.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment27.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment28.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment29.pbrt"
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment30.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment31.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment32.pbrt"
 AttributeEnd
 
 AttributeBegin
@@ -167,10 +127,6 @@ AttributeBegin
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment43.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment44.pbrt"
 AttributeEnd
 
@@ -180,10 +136,6 @@ AttributeEnd
 
 AttributeBegin
 	Include "brokenCone/coneFragment46.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment47.pbrt"
 AttributeEnd
 
 AttributeBegin
@@ -219,14 +171,6 @@ AttributeBegin
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment56.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment57.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment58.pbrt"
 AttributeEnd
 
@@ -259,10 +203,6 @@ AttributeBegin
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment66.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment67.pbrt"
 AttributeEnd
 
@@ -272,14 +212,6 @@ AttributeEnd
 
 AttributeBegin
 	Include "brokenCone/coneFragment69.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment70.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment71.pbrt"
 AttributeEnd
 
 AttributeBegin
@@ -295,23 +227,11 @@ AttributeBegin
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment75.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment76.pbrt"
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment77.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment78.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment79.pbrt"
 AttributeEnd
 
 AttributeBegin
@@ -320,10 +240,6 @@ AttributeEnd
 
 AttributeBegin
 	Include "brokenCone/coneFragment81.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment82.pbrt"
 AttributeEnd
 
 AttributeBegin
@@ -351,10 +267,6 @@ AttributeBegin
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment89.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment90.pbrt"
 AttributeEnd
 
@@ -367,15 +279,7 @@ AttributeBegin
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment93.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment94.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment95.pbrt"
 AttributeEnd
 
 AttributeBegin
@@ -403,19 +307,7 @@ AttributeBegin
 AttributeEnd
 
 AttributeBegin
-	Include "brokenCone/coneFragment102.pbrt"
-AttributeEnd
-
-AttributeBegin
 	Include "brokenCone/coneFragment103.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment104.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment105.pbrt"
 AttributeEnd
 
 AttributeBegin
@@ -424,10 +316,6 @@ AttributeEnd
 
 AttributeBegin
 	Include "brokenCone/coneFragment107.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment108.pbrt"
 AttributeEnd
 
 AttributeBegin
@@ -444,10 +332,6 @@ AttributeEnd
 
 AttributeBegin
 	Include "brokenCone/coneFragment112.pbrt"
-AttributeEnd
-
-AttributeBegin
-	Include "brokenCone/coneFragment113.pbrt"
 AttributeEnd
 
 AttributeBegin
