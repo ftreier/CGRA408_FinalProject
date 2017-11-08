@@ -1,10 +1,10 @@
 import maya.cmds as cmds
 
 
-#file_path = "/home/purvisjack/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
-file_path = "D:/Documents/Victoria/2017/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
-include_animations = True
-start_frame = 228
+file_path = "/home/purvisjack/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
+#file_path = "D:/Documents/Victoria/2017/Cgra408/FinalProject/CGRA408_FinalProject/scenes/"
+include_animations = False
+start_frame = 1
 end_frame = 360
 
 
