@@ -1,0 +1,7 @@
+AnimationFile "string filename" "brokenCone/coneFragment110.animation"
+
+Shape "trianglemesh"
+	"integer indices" [1 2 0]
+	"point P" [0.394615 0.282762 -0.166578 0.379878 0.297956 -0.154318 0.365991 0.299635 -0.179253]
+	"normal N" [-0.574524 -0.773406 0.267891 -0.574524 -0.773406 0.267891 -0.574524 -0.773405 0.267891]
+	"float uv" [0.060258 0.852975 0.058845 0.844982 0.071259 0.844099]
