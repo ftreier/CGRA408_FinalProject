@@ -1,7 +1,7 @@
 Film "image"
   "integer xresolution" [ 1920 ]
   "integer yresolution" [ 1080 ]
-  "string filename" [ "test.exr" ]
+  "string filename" [ "output/test.exr" ]
 PixelFilter "mitchell"
 LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 
@@ -10,7 +10,7 @@ LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "sobol" "integer pixelsamples" [ 1024 ]
+Sampler "sobol" "integer pixelsamples" [ 4 ]
 
 WorldBegin
 
@@ -20,12 +20,12 @@ WorldBegin
 		Rotate 200 0 0 1
 		Scale 2 2 2
 		LightSource "infinite"
-			"string mapname" [ "env_map_medium.exr" ]
+			"string mapname" [ "env/env_map_medium.exr" ]
 			"rgb L" [ 1.0 1.0 1.0 ]
 	AttributeEnd
 
 	# scene photo
-	ScenePhoto "string filename" "background.png"
+	ScenePhoto "string filename" "background/background.png"
 
 	# Adjust transform to match Maya scene
 	Scale 1 1 -1
@@ -72,33 +72,33 @@ WorldBegin
 
 		AttributeBegin
 			NamedMaterial "ballPlastic"
-			Include "ball.pbrt"
+			Include "models/ball.pbrt"
 		AttributeEnd
 
 		AttributeBegin
 			NamedMaterial "conePlastic"
-			#Include "cone.pbrt"
+			#Include "models/cone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
 			NamedMaterial "conePlastic"
-			Include "brokenCone.pbrt"
+			Include "models/brokenCone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
 			NamedMaterial "conePlastic"
-			Include "cone2.pbrt"
+			Include "models/cone2.pbrt"
 		AttributeEnd
 
 		AttributeBegin
 			Texture "stickTexture" "spectrum" "imagemap"
-				"string filename" "stick_texture.png"
+				"string filename" "textures/stick_texture.png"
 				"string	wrap" "clamp"
 			Material "plastic"
 				"texture Kd" "stickTexture"
 				"color Ks" [ 1.0 1.0 1.0 ]
 				"float roughness" [ 0.5 ]
-			Include "hockeyStick.pbrt"
+			Include "models/hockeyStick.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -106,7 +106,7 @@ WorldBegin
 				"color Kd" [ 1.0 0.8941 0.0 ]
 				"color Ks" [ 1.0 1.0 1.0 ]
 				"float roughness" [ 0.5 ]
-			Include "hockeyStickHandle.pbrt"
+			Include "models/hockeyStickHandle.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -116,7 +116,7 @@ WorldBegin
 				"float spectrans" [ 0.5 ]
 				"float speculartint" [ 1.0 ]
 				#"float roughness" [ 0.5 ]
-			Include "ballTest.pbrt"
+			Include "models/ball.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -127,7 +127,7 @@ WorldBegin
 				"float speculartint" [ 0.0 ]
 				#"float roughness" [ 0.5 ]
 				"bool thin" "true"
-			Include "coneTest.pbrt"
+			Include "models/cone.pbrt"
 		AttributeEnd
 
 	SynthSceneEnd
