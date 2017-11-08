@@ -68,6 +68,8 @@ Reformatting options:
 					   standard output and convert all triangle meshes to
 					   PLY files. Does not render an image.
   --framenumber <num>  The number of the frame to render.
+  --tempfiles <num>    Defines weather temp files are written or not.
+					   0 all, 1 just the reusable ones and 2 none.
 )");
 }
 
@@ -123,6 +125,10 @@ int main(int argc, char *argv[]) {
 		else if (!strcmp(argv[i], "--fn") || !strcmp(argv[i], "-framenumber"))
 		{
 			options.frameNumber = atoi(argv[++i]);
+		}
+		else if (!strcmp(argv[i], "--tf") || !strcmp(argv[i], "-tempfiles"))
+		{
+			options.tmpFiles = atoi(argv[++i]);
 		}
 		else if (!strcmp(argv[i], "--logtostderr"))
 		{
