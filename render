@@ -4,7 +4,7 @@
 rm -r *.exr
 rm -r *.png
 
-for value in {1..500}
+for value in {1..227}
 do
   ./build/pbrt ./scenes/test.pbrt --fn $value
 done

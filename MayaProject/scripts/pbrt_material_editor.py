@@ -62,7 +62,7 @@ class PBRTEditor(QtWidgets.QWidget):
         pbrt_exe_path = self.pbrt_exe_path_input.text()
         pbrt_template_file_path = self.dir_path_input.text() + "/template.pbrt"
         pbrt_editor_file_path = self.dir_path_input.text() + "/editor.pbrt"
-        pbrt_editor_image_path = self.dir_path_input.text() + "/materialPreview0000.png"
+        pbrt_editor_image_path = self.dir_path_input.text() + "/materialPreview.png"
 
         # Load PBRT template file
         template = self.read_pbrt_tempate_string(pbrt_template_file_path)
