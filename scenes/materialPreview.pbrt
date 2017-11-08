@@ -1,0 +1,72 @@
+Film "image"
+  "integer xresolution" [ 256 ]
+  "integer yresolution" [ 256 ]
+  "string filename" [ "materialPreview.png" ]
+PixelFilter "mitchell"
+LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
+
+Camera "perspective"
+  "float fov" [ 52 ]
+
+Sampler "sobol" "integer pixelsamples" [ 256 ]
+
+WorldBegin
+
+  AttributeBegin
+    Rotate -90 1 0 0
+    Rotate 200 0 0 1
+    Scale 2 2 2
+    LightSource "infinite"
+      "string mapname" [ "env_map_medium.exr" ]
+      "rgb L" [ 1.0 1.0 1.0 ]
+  AttributeEnd
+
+  # scene photo
+  ScenePhoto "string filename" "materialPreviewBackground.png"
+
+  # Adjust transform to match Maya scene
+  Scale 1 1 -1
+
+  # synthetic objects
+  SynthSceneBegin
+
+    MakeNamedMaterial "ballPlastic"
+      "string type" "plastic"
+      "color Kd" [ 0.8950 0.9228 0.9497 ]
+      "color Ks" [ 0.5 0.5 0.5 ]
+      "float roughness" [ 0.05 ]
+
+    MakeNamedMaterial "coneA"
+      "string type" "plastic"
+      "color Kd" [ 0.969 0.316 0.07 ]
+      "color Ks" [ 1.0 1.0 1.0 ]
+      "float roughness" [ 0.05 ]
+
+    MakeNamedMaterial "coneB"
+      "string type" "translucent"
+      "color Kd" [ 0.969 0.316 0.07 ]
+      "color Ks" [ 1.0 1.0 1.0 ]
+      "float roughness" [ 0.05 ]
+      "color reflect" [ 0.3 0.3 0.3 ]
+      "color transmit" [ 0.7 0.7 0.7 ]
+
+    MakeNamedMaterial "conePlastic"
+      "string type" "mix"
+      "color amount" [ 0.75 0.75 0.75 ]
+      "string namedmaterial1" "coneA"
+      "string namedmaterial2" "coneB"
+
+    AttributeBegin
+      NamedMaterial "ballPlastic"
+      Translate 0 -2 0
+      Scale 10 10 10
+      Include "ballTest.pbrt"
+    AttributeEnd
+
+    AttributeBegin
+      NamedMaterial "conePlastic"
+      #Include "coneTest.pbrt"
+    AttributeEnd
+
+  SynthSceneEnd
+WorldEnd

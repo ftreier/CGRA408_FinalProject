@@ -1,16 +1,14 @@
 Film "image"
   "integer xresolution" [ 1920 ]
   "integer yresolution" [ 1080 ]
-  "string filename" [ "test.exr" ]
+  "string filename" [ "test.png" ]
 PixelFilter "mitchell"
 LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
-
-#Integrator "directlighting"
 
 Camera "perspective"
 	"float fov" [ 52 ]
 
-Sampler "sobol" "integer pixelsamples" [ 1024 ]
+Sampler "sobol" "integer pixelsamples" [ 64 ]
 
 WorldBegin
 
@@ -45,30 +43,30 @@ WorldBegin
 	SynthSceneBegin
 
 		MakeNamedMaterial "ballPlastic"
-				"string type" "plastic"
-				"color Kd" [ 0.8750 0.9028 0.9497 ]
-				"color Ks" [ 0.75 0.75 0.75 ]
-				"float roughness" [ 0.5 ]
-
-		MakeNamedMaterial "coneA"
 			"string type" "plastic"
-			"color Kd" [ 0.969 0.316 0.07 ]
-			"color Ks" [ 1.0 1.0 1.0 ]
+			"color Kd" [ 0.915 0.895 1.0 ]
+			"color Ks" [ 0.4 0.4 0.4 ]
 			"float roughness" [ 0.05 ]
 
-		MakeNamedMaterial "coneB"
-			"string type" "translucent"
-			"color Kd" [ 0.969 0.316 0.07 ]
-			"color Ks" [ 1.0 1.0 1.0 ]
-			"float roughness" [ 0.05 ]
-			"color reflect" [ 0.3 0.3 0.3 ]
-			"color transmit" [ 0.7 0.7 0.7 ]
+    MakeNamedMaterial "coneA"
+      "string type" "plastic"
+      "color Kd" [0.953 0.248 0.0]
+      "color Ks" [1 1 1]
+      "float roughness" [0.015]
 
-		MakeNamedMaterial "conePlastic"
-			"string type" "mix"
-			"color amount" [ 0.75 0.75 0.75 ]
-			"string namedmaterial1" "coneA"
-			"string namedmaterial2" "coneB"
+    MakeNamedMaterial "coneB"
+      "string type" "translucent"
+      "color Kd" [0.953 0.248 0.0]
+      "color Ks" [1 1 1]
+      "float roughness" [0.01]
+      "color reflect" [0.7 0.7 0.7]
+      "color transmit" [0.3 0.3 0.3]
+
+    MakeNamedMaterial "conePlastic"
+      "string type" "mix"
+      "color amount" [0.7]
+      "string namedmaterial1" "coneA"
+      "string namedmaterial2" "coneB"
 
 		AttributeBegin
 			NamedMaterial "ballPlastic"
@@ -77,12 +75,12 @@ WorldBegin
 
 		AttributeBegin
 			NamedMaterial "conePlastic"
-			#Include "cone.pbrt"
+			Include "cone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
 			NamedMaterial "conePlastic"
-			Include "brokenCone.pbrt"
+			#Include "brokenCone.pbrt"
 		AttributeEnd
 
 		AttributeBegin
@@ -107,27 +105,6 @@ WorldBegin
 				"color Ks" [ 1.0 1.0 1.0 ]
 				"float roughness" [ 0.5 ]
 			Include "hockeyStickHandle.pbrt"
-		AttributeEnd
-
-		AttributeBegin
-			NamedMaterial "ballPlastic"
-			Material "disney"
-				"color color" [ 0.8750 0.9028 0.9497 ]
-				"float spectrans" [ 0.5 ]
-				"float speculartint" [ 1.0 ]
-				#"float roughness" [ 0.5 ]
-			Include "ballTest.pbrt"
-		AttributeEnd
-
-		AttributeBegin
-			NamedMaterial "conePlastic"
-			Material "disney"
-				"color color" [ 0.969 0.316 0.07 ]
-				"float spectrans" [ 0.5 ]
-				"float speculartint" [ 0.0 ]
-				#"float roughness" [ 0.5 ]
-				"bool thin" "true"
-			Include "coneTest.pbrt"
 		AttributeEnd
 
 	SynthSceneEnd
