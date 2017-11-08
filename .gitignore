@@ -19,3 +19,4 @@ MayaProject/images/tmp
 /Tools/Position/OutputComaprison/obj
 /*.jpg
 /Tools/Position/test
+*.directory

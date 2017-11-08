@@ -1,0 +1,13 @@
+#!/bin/bash
+# Basic range in for loop
+
+rm -r *.exr
+rm -r *.png
+
+for value in {1..500}
+do
+  ./build/pbrt ./scenes/test.pbrt --fn $value
+done
+
+echo All done
+ 
