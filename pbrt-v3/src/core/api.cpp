@@ -1472,7 +1472,10 @@ void loadOrRenderImage(string name, string extension, int xRes, int yRes, Bounds
 	{
 		cout << "Rendering " << name << " scene" << endl;
 		renderScene(buffer, inclLocal, false);
-		writeImg(name, extension, buffer, bounds, Point2i(xRes, yRes));
+		if (PbrtOptions.tmpFiles <= 1)
+		{
+			writeImg(name, extension, buffer, bounds, Point2i(xRes, yRes));
+		}
 	}
 }
 
@@ -1578,7 +1581,10 @@ void differentialRendering()
 	float *complete = new float[bufferSize];
 	renderScene(complete, true, true);
 	auto bounds = Bounds2i({ 0, 0 }, size);
-	writeImg("complete", extension, complete, bounds, size);
+	if (PbrtOptions.tmpFiles == 0)
+	{
+		writeImg("complete", extension, complete, bounds, size);
+	}
 
 	//float *original = new float[bufferSize];
 	//for (int i = 0; i < noOfPixels; i++)
@@ -1604,7 +1610,10 @@ void differentialRendering()
 	cout << "Rendering synthetic scene" << endl;
 	float *synthetic = new float[bufferSize];
 	renderScene(synthetic, false, true);
-	writeImg("synthetic", extension, synthetic, bounds, size);
+	if (PbrtOptions.tmpFiles == 0)
+	{
+		writeImg("synthetic", extension, synthetic, bounds, size);
+	}
 
 	// render environment only
 	float *environment = new float[bufferSize];
@@ -1651,14 +1660,16 @@ void differentialRendering()
 		fin[_noOfChannels * i + 2] = orig[2] * notDiff + synthetic[_noOfChannels * i + 2] * diff + changeB;
 	}
 
-	writeImg("mask", extension, printMask, bounds, size);
-	//auto s2 = Point2i(enlargedxRes, enlargedyRes);
-	//auto b2 = Bounds2i({ 0, 0 }, s2);
-	//writeImg("mask_", extension, enlargedOriginal, b2, s2);
-	writeImg("smoothenedMask", extension, smoothenedMask, bounds, size);
-	writeImg("diff", extension, diffImg, bounds, size);
-	writeImg("final", extension, fin, bounds, size);
-
+	if (PbrtOptions.tmpFiles == 0)
+	{
+		writeImg("mask", extension, printMask, bounds, size);
+		//auto s2 = Point2i(enlargedxRes, enlargedyRes);
+		//auto b2 = Bounds2i({ 0, 0 }, s2);
+		//writeImg("mask_", extension, enlargedOriginal, b2, s2);
+		writeImg("smoothenedMask", extension, smoothenedMask, bounds, size);
+		writeImg("diff", extension, diffImg, bounds, size);
+		writeImg("final", extension, fin, bounds, size);
+	}
 	// Write actual usable image
 	string filenameOnly = filename.substr(0, filename.find_last_of('.'));
 	stringstream ss;
