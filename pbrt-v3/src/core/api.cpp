@@ -191,7 +191,7 @@ struct RenderOptions {
 	// Differential rendering properties
 	ParamSet _differentialBg;
 	float* _destBuffer;
-	//bool diffRendering;
+	bool _diffRendering = false;
 };
 
 struct GraphicsState {
@@ -1712,27 +1712,50 @@ void pbrtWorldEnd()
 	}
 
 	// Create scene and render
-	differentialRendering();
-	//if (PbrtOptions.cat || PbrtOptions.toPly) {
-	//	printf("%*sWorldEnd\n", catIndentCount, "");
-	//} else {
-	//	unique_ptr<Integrator> integrator(renderOptions->MakeIntegrator());
-	//	unique_ptr<Scene> scene(renderOptions->MakeScene());
+	if (renderOptions->_diffRendering)
+	{
+		differentialRendering();
+	}
+	else
+	{
+		if (PbrtOptions.cat || PbrtOptions.toPly)
+		{
+			printf("%*sWorldEnd\n", catIndentCount, "");
+		}
+		else
+		{
+			int xRes = renderOptions->FilmParams.FindOneInt("xresolution", 0);
+			int yRes = renderOptions->FilmParams.FindOneInt("yresolution", 0);
 
-	//	// This is kind of ugly; we directly override the current profiler
-	//	// state to switch from parsing/scene construction related stuff to
-	//	// rendering stuff and then switch it back below. The underlying
-	//	// issue is that all the rest of the profiling system assumes
-	//	// hierarchical inheritance of profiling state; this is the only
-	//	// place where that isn't the case.
-	//	CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::SceneConstruction));
-	//	ProfilerState = ProfToBits(Prof::IntegratorRender);
+			float * buffer = new float[_noOfChannels * xRes * yRes];
+			renderScene(buffer, true, true);
 
-	//	if (scene && integrator) integrator->Render(*scene);
+			auto size = Point2i(xRes, yRes);
+			auto bounds = Bounds2i({ 0,0 }, size);
+			string filename = renderOptions->FilmParams.FindOneFilename("filename", "");
+			string name = filename.substr(0, filename.find_last_of('.'));
+			string extension = filename.substr(filename.find_last_of('.'));
 
-	//	CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::IntegratorRender));
-	//	ProfilerState = ProfToBits(Prof::SceneConstruction);
-	//}
+			writeImg(name, extension, buffer, bounds, size);
+
+			//unique_ptr<Integrator> integrator(renderOptions->MakeIntegrator());
+			//unique_ptr<Scene> scene(renderOptions->MakeScene(true, true));
+
+			//// This is kind of ugly; we directly override the current profiler
+			//// state to switch from parsing/scene construction related stuff to
+			//// rendering stuff and then switch it back below. The underlying
+			//// issue is that all the rest of the profiling system assumes
+			//// hierarchical inheritance of profiling state; this is the only
+			//// place where that isn't the case.
+			//CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::SceneConstruction));
+			//ProfilerState = ProfToBits(Prof::IntegratorRender);
+
+			//if (scene && integrator) integrator->Render(*scene);
+
+			//CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::IntegratorRender));
+			//ProfilerState = ProfToBits(Prof::SceneConstruction);
+		}
+	}
 
 	// Clean up after rendering. Do this before reporting stats so that
 	// destructors can run and update stats as needed.
@@ -1767,6 +1790,7 @@ void pbrtWorldEnd()
 void cgraScenePhoto(const ParamSet params)
 {
 	renderOptions->_differentialBg = params;
+	renderOptions->_diffRendering = true;
 }
 
 void cgraSynthSceneBegin()
