@@ -1,0 +1,93 @@
+Film "image"
+  "integer xresolution" [ 1200 ]
+  "integer yresolution" [ 800 ]
+  "string filename" [ "test.exr" ]
+PixelFilter "box"
+LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
+
+Camera "perspective"
+	"float fov" [ 52 ]
+
+Sampler "halton" "integer pixelsamples" [ 4 ]
+
+WorldBegin
+
+	# distance scene
+	AttributeBegin
+		Rotate -90 1 0 0
+		Rotate 200 0 0 1
+		Scale 2.0 2.0 2.0
+		LightSource "infinite"
+			"string mapname" [ "env_map_small.exr" ]
+			"rgb L" [ 1.0 1.0 1.0 ]
+	AttributeEnd
+
+	# scene photo
+	ScenePhoto "string filename" "background_small.png"
+
+	# local scene
+	AttributeBegin
+		Material "substrate"
+			"rgb Kd" [ 1.0 1.0 1.0 ]
+
+		Shape "trianglemesh"
+			"integer indices" [ 0 1 2 0 3 2 ]
+			"point P" [-10 0 -10 10 0 -10 10 0 10 -10 0 10 ]
+	AttributeEnd
+
+	# synthetic objects
+	SynthSceneBegin
+
+		MakeNamedMaterial "coneA"
+			"string type" "plastic"
+			"color Kd" [ 0.969 0.316 0.07 ]
+			"color Ks" [ 1.0 1.0 1.0 ]
+			"float roughness" [ 0.05 ]
+
+		MakeNamedMaterial "coneB"
+			"string type" "translucent"
+			"color Kd" [ 0.969 0.316 0.07 ]
+			"color Ks" [ 1.0 1.0 1.0 ]
+			"float roughness" [ 0.05 ]
+			"color reflect" [ 0.0 0.0 0.0 ]
+			"color transmit" [ 1.0 1.0 1.0 ]
+
+		MakeNamedMaterial "conePlastic"
+			"string type" "mix"
+			"color amount" [ 0.2 0.2 0.2 ]
+			"string namedmaterial1" "coneA"
+			"string namedmaterial2" "coneB"
+		AttributeBegin
+			#AnimationFile "string filename" "blabla"
+			Material "plastic"
+				"color Kd" [ 1.0 1.0 1.0 ]
+				"color Ks" [ 0.75 0.75 0.75 ]
+				"float roughness" [ 0.2 ]
+			#Include "ball.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			NamedMaterial "conePlastic"
+			Include "cone.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			#Translate 2 0 2
+			NamedMaterial "conePlastic"
+			#Include "coneTest.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			Material "matte"
+				"color Kd" [ 0.5 0.5 0.5 ]
+			#Include "plane.pbrt"
+		AttributeEnd
+
+		AttributeBegin
+			Material "mirror"
+			Translate 0 4 0
+			#Shape "sphere" "float radius" [6]
+		AttributeEnd
+
+	SynthSceneEnd
+WorldEnd
