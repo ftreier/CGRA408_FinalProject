@@ -1518,7 +1518,11 @@ void smoothenMask(int xRes, int yRes, float* printMask, float* smoothenedMask)
 	}
 
 	// Apply filter mask
-	float *filterMask = new float[9]{ 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f };
+	float *filterMask = new float[9] {
+            0.075f, 0.075f, 0.075f,
+            0.075f, 0.4f, 0.075f,
+            0.075f, 0.075f, 0.075f
+    };
 	for(int i = 0; i < yRes; i++)
 	{
 		for (int j = 0; j < xRes; j++)
