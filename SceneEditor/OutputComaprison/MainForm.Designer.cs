@@ -53,14 +53,14 @@ namespace OutputComaprison
 			// _dockContainer
 			// 
 			this._dockContainer.AutoSize = true;
+			this._dockContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this._dockContainer.BackColor = System.Drawing.SystemColors.Window;
 			this._dockContainer.BottomPanelHeight = 150;
 			this._dockContainer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._dockContainer.LeftPanelWidth = 246;
 			this._dockContainer.Location = new System.Drawing.Point(3, 44);
-			this._dockContainer.MinimumSize = new System.Drawing.Size(604, 753);
 			this._dockContainer.Name = "_dockContainer";
-			this._dockContainer.RightPanelWidth = 154;
+			this._dockContainer.RightPanelWidth = 150;
 			this._dockContainer.Size = new System.Drawing.Size(1194, 753);
 			this._dockContainer.TabIndex = 0;
 			this._dockContainer.TopPanelHeight = 400;
