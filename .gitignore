@@ -21,3 +21,6 @@ MayaProject/images/tmp
 /*.jpg
 /Tools/Position/test
 *.directory
+/SceneEditor/OutputComaprison/bin
+/SceneEditor/OutputComaprison/obj
+/SceneEditor/.vs
