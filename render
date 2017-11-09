@@ -10,10 +10,10 @@ do
   if [ $value -le 227 ]
   then
     echo render normal scene \n
-    ./release/pbrt ./scenes/sceneA.pbrt --fn $value --tf 1 
+    ./pbrt-v3/cmake-build-release/pbrt ./scenes/sceneA.pbrt --fn $value --tf 2 
   else
     echo render shattered cone \n
-    ./release/pbrt ./scenes/sceneA.pbrt --fn $value --tf 1 
+    ./pbrt-v3/cmake-build-release/pbrt ./scenes/sceneB.pbrt --fn $value --tf 2 
   fi
 done
 
