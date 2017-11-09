@@ -1519,10 +1519,11 @@ void smoothenMask(int xRes, int yRes, float* printMask, float* smoothenedMask)
 
 	// Apply filter mask
 	float *filterMask = new float[9] {
-            0.075f, 0.075f, 0.075f,
-            0.075f, 0.4f, 0.075f,
-            0.075f, 0.075f, 0.075f
-    };
+			0.075f, 0.075f, 0.075f,
+			0.075f, 0.4f, 0.075f,
+			0.075f, 0.075f, 0.075f
+	};
+
 	for(int i = 0; i < yRes; i++)
 	{
 		for (int j = 0; j < xRes; j++)
@@ -1548,7 +1549,6 @@ void differentialRendering()
 	}
 
 	string extension = filename.substr(filename.find_last_of('.'));
-	//transform(extension.begin(), extension.end(), extension.begin(), tolower);
 
 	double tolerance = 0.01;
 	if(extension.compare(".png") == 0)
@@ -1586,25 +1586,9 @@ void differentialRendering()
 		writeImg("complete", extension, complete, bounds, size);
 	}
 
-	//float *original = new float[bufferSize];
-	//for (int i = 0; i < noOfPixels; i++)
-	//{
-	//	float *rgb = new float[3];
-	//	bg[i].ToRGB(rgb);
-	//	//bg[i].ToRGB(rgb);
-	//	original[i * 3 + 0] = rgb[0];
-	//	original[i * 3 + 1] = rgb[1];
-	//	original[i * 3 + 2] = rgb[2];
-	//}
-
-	//WriteImage("test.exr", original, bounds, size);
-
 	// render the local scene
 	float *local = new float[bufferSize];
 	loadOrRenderImage("local", extension, xRes, yRes, bounds, local, true);
-	//cout << "Rendering local scene" << endl;
-	//renderScene(local, true, false);
-	//writeImg("local", extension, local, bounds, size);
 
 	// render the synthetic scene
 	cout << "Rendering synthetic scene" << endl;
@@ -1618,9 +1602,6 @@ void differentialRendering()
 	// render environment only
 	float *environment = new float[bufferSize];
 	loadOrRenderImage("environment", extension, xRes, yRes, bounds, environment, false);
-	//cout << "Rendering environment" << endl;
-	//renderScene(environment, false, false);
-	//writeImg("environment", extension, environment, bounds, size);
 
 	float *printMask = new float[bufferSize];
 	float *smoothenedMask = new float[bufferSize];
@@ -1634,7 +1615,6 @@ void differentialRendering()
 			abs(synthetic[_noOfChannels * i + 2] - environment[_noOfChannels * i + 2]);
 
 		diff = diff > tolerance ? 1 : 0;
-		//printMask[i] = diff;
 		printMask[_noOfChannels * i + 0] = printMask[_noOfChannels * i + 1] = printMask[_noOfChannels * i + 2] = diff;
 	}
 
@@ -1663,47 +1643,22 @@ void differentialRendering()
 	if (PbrtOptions.tmpFiles == 0)
 	{
 		writeImg("mask", extension, printMask, bounds, size);
-		//auto s2 = Point2i(enlargedxRes, enlargedyRes);
-		//auto b2 = Bounds2i({ 0, 0 }, s2);
-		//writeImg("mask_", extension, enlargedOriginal, b2, s2);
 		writeImg("smoothenedMask", extension, smoothenedMask, bounds, size);
 		writeImg("diff", extension, diffImg, bounds, size);
 		writeImg("final", extension, fin, bounds, size);
 	}
+
 	// Write actual usable image
 	string filenameOnly = filename.substr(0, filename.find_last_of('.'));
 	stringstream ss;
 	ss << filenameOnly << setw(4) << setfill('0') << PbrtOptions.frameNumber;
 	writeImg(ss.str(), extension, fin, bounds, size);
 
-	//if(extension.compare(".png") == 0)
-	//{
-	//	WriteNoGammaCorrectedPNGImage("complete" + extension, complete, bounds);
-	//	WriteNoGammaCorrectedPNGImage("local" + extension, local, bounds);
-	//	WriteNoGammaCorrectedPNGImage("synthetic" + extension, synthetic, bounds);
-	//	WriteNoGammaCorrectedPNGImage("environment" + extension, environment, bounds);
-	//	WriteNoGammaCorrectedPNGImage("mask" + extension, printMask, bounds);
-	//	WriteNoGammaCorrectedPNGImage("diff" + extension, diffImg, bounds);
-	//	WriteNoGammaCorrectedPNGImage("final" + extension, fin, bounds);
-	//}
-	//else
-	//{
-	//	
-	//	//WriteImage("complete" + extension, complete, bounds, size);
-	//	//WriteImage("local" + extension, local, bounds, size);
-	//	//WriteImage("synthetic" + extension, synthetic, bounds, size);
-	//	//WriteImage("environment" + extension, environment, bounds, size);
-	//	//WriteImage("mask" + extension, printMask, bounds, size);
-	//	//WriteImage("diff" + extension, diffImg, bounds, size);
-	//	//WriteImage("final" + extension, fin, bounds, size);
-	//}
-
 	// cleaning up
 	delete[] complete;
 	delete[] local;
 	delete[] synthetic;
 	delete[] environment;
-	//delete[] mask;
 	delete[] printMask;
 	delete[] smoothenedMask;
 	delete[] diffImg;
@@ -1752,23 +1707,6 @@ void pbrtWorldEnd()
 			string extension = filename.substr(filename.find_last_of('.'));
 
 			writeImg(name, extension, buffer, bounds, size);
-
-			//unique_ptr<Integrator> integrator(renderOptions->MakeIntegrator());
-			//unique_ptr<Scene> scene(renderOptions->MakeScene(true, true));
-
-			//// This is kind of ugly; we directly override the current profiler
-			//// state to switch from parsing/scene construction related stuff to
-			//// rendering stuff and then switch it back below. The underlying
-			//// issue is that all the rest of the profiling system assumes
-			//// hierarchical inheritance of profiling state; this is the only
-			//// place where that isn't the case.
-			//CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::SceneConstruction));
-			//ProfilerState = ProfToBits(Prof::IntegratorRender);
-
-			//if (scene && integrator) integrator->Render(*scene);
-
-			//CHECK_EQ(CurrentProfilerState(), ProfToBits(Prof::IntegratorRender));
-			//ProfilerState = ProfToBits(Prof::SceneConstruction);
 		}
 	}
 
@@ -1898,7 +1836,7 @@ void cgraAnimation(const ParamSet params)
 	}
 	else
 	{
-		cout << "Unable to open animation file." << endl;
+		cout << "Unable to open animation file " << file << "." << endl;
 	}
 }
 
@@ -1921,9 +1859,6 @@ Scene *RenderOptions::MakeScene(bool includeLocal, bool includeSynth)
 	}
 
 	Scene *scene = new Scene(accelerator, lights);
-	//// Erase primitives and lights from _RenderOptions_
-	//primitives.erase(primitives.begin(), primitives.end());
-	//lights.erase(lights.begin(), lights.end());
 	return scene;
 }
 
