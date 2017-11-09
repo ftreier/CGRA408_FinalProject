@@ -21,7 +21,6 @@ namespace OutputComaprison
 
 		private string _pbrtPath;
 		private string _baseImgPath;
-		//private int _frameNumber = 0;
 
 		#endregion
 
