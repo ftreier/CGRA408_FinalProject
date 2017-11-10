@@ -158,7 +158,7 @@ def get_current_transform(selected_mesh):
 
     # Write parent transform if object has a transform parent
     parents = cmds.listRelatives(selected_mesh, parent=True, type="transform")
-    if len(parents) > 0:
+    if parents is not None and len(parents) > 0:
         matrix = cmds.xform(parents[0], query=True, matrix=True)
         for m in range(0, len(matrix)):
             matrix[m] = round(matrix[m], 6)

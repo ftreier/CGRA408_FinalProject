@@ -61,32 +61,10 @@ set
 echo == WHATS IN LOCAL/TMP ON THE MACHINE WE ARE RUNNING ON ==
 ls -ltra /local/tmp | tail
 #
-echo == WHATS IN LOCAL TMP treierflor JOB_ID AT THE START==
-ls -la 
-#
-# Copy the input file to the local directory
-#
-#cp /vol/grid-solar/sgeusers/treierflor/krb_tkt_flow.JPG .
-# copy pbrt directory
-#cp -R /vol/grid-solar/sgeusers/treierflor/cgra408/FinalProject/CGRA408_FinalProject/cmake-build-release/ build/
-#cp -R /vol/grid-solar/sgeusers/treierflor/cgra408/FinalProject/CGRA408_FinalProject/scenes/ scenes/
-echo ==WHATS THERE HAVING COPIED STUFF OVER AS INPUT==
-#ls -la 
-# 
-# Note that we need the full path to this utility, as it is not on the PATH
+# Move to my local directory and rund PBRT
 #
 cd /am/rialto/home1/treierflor/cgra408/FinalProject/CGRA408_FinalProject/
-./release/pbrt ./scenes/test.pbrt --fn $SGE_TASK_ID
+./release/pbrt ./scenes/test.pbrt --fn $SGE_TASK_ID --tf 2
 #/usr/pkg/bin/convert krb_tkt_flow.JPG krb_tkt_flow.png
 #
-echo ==AND NOW, HAVING DONE SOMTHING USEFUL AND CREATED SOME OUTPUT==
-#ls -la
-#
-# Now we move the output to a place to pick it up from later
-#  noting that we need to distinguish between the TASKS
-#  (really should check that directory exists too, but this is just a test)
-#
-#mkdir -p /vol/grid-solar/sgeusers/treierflor/$JOB_ID
-#cp krb_tkt_flow.png  /vol/grid-solar/sgeusers/treierflor/$JOB_ID/krb_tkt_flow.$SGE_TASK_ID.png
-#
-echo "Ran through OK"
+echo "Finished rendering frame" $SGE_TASK_ID

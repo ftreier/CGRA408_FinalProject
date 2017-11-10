@@ -60,7 +60,7 @@ WorldBegin
       NamedMaterial "ballPlastic"
       Translate 0 -2 0
       Scale 10 10 10
-      #Include "ballTest.pbrt"
+      Include "ballTest.pbrt"
     AttributeEnd
 
     AttributeBegin
@@ -82,7 +82,7 @@ WorldBegin
       Rotate -45 1 0 0
       #Rotate 180 0 1 0
       Scale 4.5 4.5 4.5
-      Include "hockeyStickTest.pbrt"
+      #Include "hockeyStickTest.pbrt"
     AttributeEnd
 
     AttributeBegin
@@ -95,7 +95,7 @@ WorldBegin
       Rotate -45 1 0 0
       #Rotate 180 0 1 0
       Scale 4.5 4.5 4.5
-      Include "hockeyStickHandleTest.pbrt"
+      #Include "hockeyStickHandleTest.pbrt"
     AttributeEnd
 
   SynthSceneEnd
