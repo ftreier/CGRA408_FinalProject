@@ -11,7 +11,7 @@ class PBRTEditor(QtWidgets.QWidget):
         super(PBRTEditor, self).__init__()
 
         # Setup GUI window
-        self.setWindowTitle("PBRT Material & Texture Editor")
+        self.setWindowTitle("PBRT Material Editor")
         self.layout = QtWidgets.QVBoxLayout(self)
 
         # Setup path inputs
@@ -21,7 +21,7 @@ class PBRTEditor(QtWidgets.QWidget):
         self.pbrt_exe_path_input = QtWidgets.QLineEdit(self.default_pbrt_exe_path)
         self.path_layout.addRow("PBRT Executable Path:", self.pbrt_exe_path_input)
         self.dir_path_input = QtWidgets.QLineEdit(self.default_dir_path)
-        self.path_layout.addRow("Texture Editor Path:", self.dir_path_input)
+        self.path_layout.addRow("Material Editor Path:", self.dir_path_input)
 
         self.layout.addLayout(self.path_layout)
 
