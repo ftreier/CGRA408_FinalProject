@@ -46,6 +46,7 @@ namespace OutputComaprison
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this._fnLbl = new System.Windows.Forms.ToolStripLabel();
 			this._fnTb = new System.Windows.Forms.ToolStripTextBox();
+			this._aboutBtn = new System.Windows.Forms.ToolStripButton();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -59,9 +60,10 @@ namespace OutputComaprison
 			this._dockContainer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._dockContainer.LeftPanelWidth = 246;
 			this._dockContainer.Location = new System.Drawing.Point(3, 44);
+			this._dockContainer.MinimumSize = new System.Drawing.Size(600, 755);
 			this._dockContainer.Name = "_dockContainer";
 			this._dockContainer.RightPanelWidth = 150;
-			this._dockContainer.Size = new System.Drawing.Size(1194, 753);
+			this._dockContainer.Size = new System.Drawing.Size(1194, 755);
 			this._dockContainer.TabIndex = 0;
 			this._dockContainer.TopPanelHeight = 400;
 			// 
@@ -95,7 +97,8 @@ namespace OutputComaprison
             this._baseImgPathBtn,
             this.toolStripSeparator3,
             this._fnLbl,
-            this._fnTb});
+            this._fnTb,
+            this._aboutBtn});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(1200, 41);
@@ -106,7 +109,7 @@ namespace OutputComaprison
 			// 
 			this._run.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this._run.Enabled = false;
-			this._run.Image = ((System.Drawing.Image)(resources.GetObject("_run.Image")));
+			this._run.Image = global::OutputComaprison.Properties.Resources.run;
 			this._run.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this._run.Name = "_run";
 			this._run.Size = new System.Drawing.Size(36, 38);
@@ -184,6 +187,18 @@ namespace OutputComaprison
 			this._fnTb.Size = new System.Drawing.Size(100, 39);
 			this._fnTb.TextChanged += new System.EventHandler(this._fnTb_TextChanged);
 			// 
+			// _aboutBtn
+			// 
+			this._aboutBtn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this._aboutBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this._aboutBtn.Image = global::OutputComaprison.Properties.Resources.info;
+			this._aboutBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this._aboutBtn.Name = "_aboutBtn";
+			this._aboutBtn.Size = new System.Drawing.Size(36, 36);
+			this._aboutBtn.Text = "About";
+			this._aboutBtn.ToolTipText = "About";
+			this._aboutBtn.Click += new System.EventHandler(this.About_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -191,7 +206,7 @@ namespace OutputComaprison
 			this.ClientSize = new System.Drawing.Size(1200, 800);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Name = "MainForm";
-			this.Text = "Form1";
+			this.Text = "PBRT Scene editor and output Preview";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.tableLayoutPanel1.ResumeLayout(false);
@@ -219,6 +234,7 @@ namespace OutputComaprison
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripLabel _fnLbl;
 		private System.Windows.Forms.ToolStripTextBox _fnTb;
+		private System.Windows.Forms.ToolStripButton _aboutBtn;
 	}
 }
 
