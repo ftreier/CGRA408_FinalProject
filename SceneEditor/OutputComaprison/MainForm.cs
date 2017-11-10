@@ -189,7 +189,7 @@ namespace OutputComaprison
 			Settings.Default.PbrtSceneFile = _editor.SceneFile;
 			int fn;
 			int.TryParse(_fnTb.Text, out fn);
-			fn = Settings.Default.FrameNumber;
+			Settings.Default.FrameNumber = fn;
 			Settings.Default.Save();
 		}
 
@@ -288,6 +288,13 @@ namespace OutputComaprison
 				_fnTb.ForeColor = Color.Red;
 				_fnLbl.ForeColor = Color.Red;
 			}
+		}
+
+		private void About_Click(object sender, EventArgs e)
+		{
+			MessageBox.Show(
+				"This is a simple tool to edit a PBRT scene file and see the result of the differential  rendering run.\n(c) 2017 Jack Purvis and Florian Treier\n\nThis software uses the FreeImage open source image library. See http://freeimage.sourceforge.net for details.\n FreeImage is used under the GPL, version 3 license. ",
+				@"About", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		#endregion

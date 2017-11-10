@@ -1,7 +1,7 @@
 Film "image"
   "integer xresolution" [ 1920 ]
   "integer yresolution" [ 1080 ]
-  "string filename" [ "output/frame.png" ]
+  "string filename" [ "output/frame.exr" ]
 PixelFilter "mitchell"
 LookAt 8.7882 11.4442 -9.1934 0 0 0 0 1 0
 
